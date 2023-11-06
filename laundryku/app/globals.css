@@ -25,3 +25,14 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+h1 {
+  font-size: 24pt;
+  font-weight: bold;
+}
+
+h2 {
+  font-weight: 700;
+  color: #999696;
+  letter-spacing: 1px;
+}
