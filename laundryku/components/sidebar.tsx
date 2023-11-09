@@ -56,7 +56,7 @@ export default function Sidebar() {
             />}
           <h2 className={`${pathname == "/pesanan" && "text-white"}`}>Pesanan</h2>
         </div>
-        <div className={`flex gap-4 ${pathname == "/laporan" && "bg-[#7689E7] px-4 py-3 rounded-full"}`}>
+        <div className={`flex gap-4 px-4 ${pathname == "/laporan" && "bg-[#7689E7] py-3 rounded-full"}`}>
           {pathname == "/laporan" ?
             <Image
               className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
