@@ -29,6 +29,7 @@ body {
 h1 {
   font-size: 24pt;
   font-weight: bold;
+  margin-bottom: 8px;
 }
 
 h2 {
