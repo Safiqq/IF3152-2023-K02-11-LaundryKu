@@ -1,5 +1,6 @@
 import Sidebar from "@/components/sidebar";
-import Searchbar from "@/components/searchbar";
+// import Searchbar from "@/components/searchbar";
+import Header from "@/components/navbar";
 import Table from "@/components/table";
 
 const data = [
@@ -65,20 +66,22 @@ const data = [
   },
 ]
 
-export default function Pesanan() {
+export default function Pesanan(props: {isWideScreen:boolean}) {
+  const {isWideScreen} = props;
   return (
-    <main className="flex min-w-screen min-h-screen bg-[#F5F7FF]">
-      <Sidebar />
-      <div className="basis-1/5"></div>
-      <div className="flex flex-col basis-4/5 overflow-x-auto">
-        <div className="items-center">
-          <Searchbar isShow={true}></Searchbar>
-        </div>
+    // <main className="flex min-w-screen min-h-screen bg-[#F5F7FF]">
+    //   <Sidebar isWideScreen />
+    //   {isWideScreen && <div className="basis-1/5" />}
+    //   <div className={`flex flex-col ${isWideScreen && "basis-4/5"} ${!isWideScreen && "w-full"}`}>
+    //     <div className="items-center">
+    //       <Header></Header>
+    //       {/* <Searchbar isShow={true}></Searchbar> */}
+    //     </div>
         <div className="px-12">
           <h1>Manajemen Pesanan</h1>
           <Table data={data} rud={["u"]} />
         </div>
-      </div>
-    </main>
+    //   </div>
+    // </main>
   );
 }

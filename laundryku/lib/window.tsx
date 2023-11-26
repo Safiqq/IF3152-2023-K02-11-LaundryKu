@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from "react";
 
 export const useWindowSize = () => {
@@ -18,3 +20,5 @@ export const useWindowSize = () => {
   }, []);
   return windowSize;
 }
+
+export const isWideScreen = () => useWindowSize().width > 1386;

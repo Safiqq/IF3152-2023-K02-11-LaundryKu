@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React, { useEffect, useState } from "react";
 import Sidebar from "@/components/sidebar";
@@ -6,9 +6,10 @@ import Searchbar from "@/components/searchbar";
 import { Dropdown, DropdownElement } from "@/components/dropdown";
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import Table from "@/components/table";
+import { toCurrency } from "@/lib/utils";
 
 interface LaporanTransaksi {
-  no: number;
+  id: number;
   nama_barang: string;
   harga: number;
   jumlah: number;
@@ -17,68 +18,66 @@ interface LaporanTransaksi {
 
 const data: LaporanTransaksi[] = [
   {
-    no: 1,
+    id: 1,
     nama_barang: "Kaos",
     harga: 10000,
     jumlah: 1,
   },
   {
-    no: 2,
+    id: 2,
     nama_barang: "Celana Panjang",
     harga: 10000,
     jumlah: 2,
   },
   {
-    no: 3,
+    id: 3,
     nama_barang: "Kemeja",
     harga: 10000,
     jumlah: 1,
   },
   {
-    no: 4,
+    id: 4,
     nama_barang: "Sprei",
     harga: 10000,
     jumlah: 3,
   },
   {
-    no: 5,
+    id: 5,
     nama_barang: "Selimut",
     harga: 10000,
     jumlah: 2,
   },
   {
-    no: 6,
+    id: 6,
     nama_barang: "Handuk",
     harga: 10000,
     jumlah: 1,
   },
   {
-    no: 7,
+    id: 7,
     nama_barang: "Matras",
     harga: 10000,
     jumlah: 1,
   },
   {
-    no: 8,
+    id: 8,
     nama_barang: "Sarung Bantal",
     harga: 10000,
     jumlah: 1,
   },
   {
-    no: 9,
+    id: 9,
     nama_barang: "Sepatu Tinggi",
     harga: 10000,
     jumlah: 3,
   },
   {
-    no: 10,
+    id: 10,
     nama_barang: "Tas Besar",
     harga: 10000,
     jumlah: 1,
   },
 ];
-
-const toCurrency = (num: number) => "Rp" + num.toLocaleString("id-ID");
 
 for (let i = 0; i < data.length; i++) {
   data[i]["harga_total"] = data[i].harga * data[i].jumlah;
@@ -93,11 +92,8 @@ export default function Laporan() {
   const [singleDatepicker, setSingleDatepicker] = useState(true);
 
   const handleChangeDatepicker = (newValue: DateValueType) => {
-    console.log(1)
     if (newValue?.startDate) {
-      console.log(2)
       const endDate = new Date(newValue.startDate);
-      console.log(3)
       setValue({
         startDate: new Date(newValue.startDate),
         endDate: new Date(
@@ -132,7 +128,6 @@ export default function Laporan() {
         setSingleDatepicker(jenisLaporan === "harian");
       }
       if ((e.target as HTMLElement).tagName === "INPUT") {
-      console.log("CLICKCLICKCLICKCLICKCLICK")
       setSingleDatepicker(true);
     }
   };
@@ -159,17 +154,10 @@ export default function Laporan() {
   ];
 
   return (
-    <main className="flex min-w-screen min-h-screen bg-[#F5F7FF]">
-      <Sidebar></Sidebar>
-      <div className="basis-1/5"></div>
-      <div className="flex flex-col basis-4/5">
-        <div className="items-center">
-          <Searchbar isShow={false}></Searchbar>
-        </div>
         <div className="px-12">
           <h1>Laporan Transaksi</h1>
-          <div className="flex items-center">
-            <Dropdown elements={dropdownElements}></Dropdown>
+          <div className="flex items-center gap-4">
+            <Dropdown elements={dropdownElements} type={1}></Dropdown>
             <div
               onClick={handleClickDatepicker}
               onBlur={handleBlurDatepicker}
@@ -190,7 +178,6 @@ export default function Laporan() {
           </div>
           <Table
             data={data}
-            rud={[]}
             footer={[
               "Total Pemasukan",
               toCurrency(
@@ -199,7 +186,5 @@ export default function Laporan() {
             ]}
           />
         </div>
-      </div>
-    </main>
   );
 }

@@ -11,17 +11,17 @@ export interface DropdownElement {
   onClick: () => void;
 }
 
-export function Dropdown(props: { elements: DropdownElement[] }) {
-  const { elements } = props;
-  const [text, setText] = useState("Harian");
+export function Dropdown(props: { elements: DropdownElement[], type: number }) {
+  const { elements, type } = props;
+  const [text, setText] = useState(elements[0].text);
 
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full items-center rounded-full bg-[#7689E7] px-4 py-0.5 font-semibold text-white shadow-sm hover:bg-[#7689E7]/90">
+        <Menu.Button className={`inline-flex w-full items-center px-4 py-0.5 shadow-sm ${type === 1 && "font-semibold rounded-full bg-[#7689E7] hover:bg-[#7689E7]/90 text-white"} ${type === 2 && "rounded-2xl border border-black text-black text-md"}`}>
           {text}
           <ChevronDownIcon
-            className="-mr-1 h-10 w-8 text-white"
+            className="-mr-1 h-10 w-8"
             aria-hidden="true"
           />
         </Menu.Button>

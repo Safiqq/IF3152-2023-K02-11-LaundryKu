@@ -15,7 +15,6 @@ model Authentication {
   token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  deletedAt DateTime
 }
 
 enum UserType {
@@ -32,12 +31,18 @@ model User {
   tipe     UserType
 }
 
+enum StatusItem {
+  Aktif
+  TidakAktif
+}
+
 model Item {
   id         Int         @id @default(autoincrement())
   nama       String
   harga      Int
   gambar     String
   kategori   String
+  status     StatusItem
   keranjangs Keranjang[]
   pesanans   Pesanan[]
 }

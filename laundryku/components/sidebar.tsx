@@ -1,32 +1,22 @@
 "use client"
 
-import { useWindowSize } from '@/utils/functions';
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-export default function Sidebar(props: {
-  wideScreen: boolean
-}) {
-  const {wideScreen} = props;
+export default function Sidebar() {
   const pathname = usePathname();
-  // const windowSize = useWindowSize();
   const [isMinimize, setIsMinimize] = useState(true);
-  // const [wideScreen, setWideScreen] = useState(windowSize.width > 1386);
-  
-  // useEffect(() => {
-  //   setWideScreen(windowSize.width > 1386);
-  //   console.log(windowSize.width)
-  // }, [windowSize.width]);
+  const isWideScreen = true;
 
   return (
-    <div className={`${wideScreen ? "absolute h-full w-1/5 bg-white rounded-r-3xl" : (!isMinimize ? "absolute z-10 h-full w-screen bg-white" : "absolute w-24 h-12 top-8 bg-[#7689E7] rounded-r-3xl")}`}>
-      {!wideScreen && isMinimize &&
+    <div className={`${isWideScreen ? "h-full w-1/5 bg-white rounded-r-3xl" : (!isMinimize ? "z-10 h-full w-screen bg-white" : "w-24 h-12 top-8 bg-[#7689E7] rounded-r-3xl")}`}>
+      {!isWideScreen && isMinimize &&
         <div className='flex justify-end mx-4 items-center h-full cursor-pointer' onClick={() => setIsMinimize(!isMinimize)}>
           <Image
             className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-            src="/hamburger-menu.svg"
+            src="/logo-white/hamburger-menu.svg"
             alt="Menu"
             width={28}
             height={28}
@@ -34,12 +24,12 @@ export default function Sidebar(props: {
           />
         </div>
       }
-      {!wideScreen && !isMinimize &&
+      {!isWideScreen && !isMinimize &&
         <>
           <div className='flex justify-end m-16' onClick={() => setIsMinimize(!isMinimize)}>
             <Image
               className="cursor-pointer p-4 relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-              src="/close.svg"
+              src="/logo-black/close.svg"
               alt="Close"
               width={52}
               height={52}
@@ -124,7 +114,7 @@ export default function Sidebar(props: {
           </div>
         </>
       }
-      {wideScreen &&
+      {isWideScreen &&
         <>
           <Image
             className="mx-auto p-12 relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
