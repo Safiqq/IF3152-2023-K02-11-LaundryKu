@@ -5,16 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 export default function SignIn() {
-  const isClient = typeof window !== 'undefined';
-  const router = isClient ? useRouter() : null;
-
-  const handleSignUp = () => {
-    if (isClient && router) {
-      // Only use router.push on the client side
-      router.push('/signup');
-    }
-
-  };
+  const router= useRouter();
   return (
     <>
       <div className="mr-5 flex-grow flex justify-end">
@@ -35,7 +26,7 @@ export default function SignIn() {
                 type="button"
                 className="ml-3 inline-block rounded-full border-2 border-[##999696] px-6 pb-[8px] pt-2 text-sm font-medium uppercase leading-normal text-[#7689E7] transition duration-150 ease-in-out hover:border-[#7689E7] hover:bg-neutral-500 hover:bg-opacity-10 hover:text-[#7689E7] focus:border-[#7689E7] focus:text-[#7689E7] focus:outline-none focus:ring-0 active:border-[#7689E7] active:text-[#7689E7] dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
                 data-te-ripple-init
-                onClick={handleSignUp}
+                onClick={() => router.push('/signup')}
               >
                 Sign Up
               </button>
@@ -45,7 +36,7 @@ export default function SignIn() {
         <div className='ml-12 mt-40'>
           <div>
             <h1>Welcome Back!</h1>
-            <h4 className='text-[#928B8B]'>Sign in to your account</h4>
+            <h4>Sign in to your account</h4>
           </div>
           <div className="text-black flex flex-col gap-4 mt-6 mb-10">
             <div>
@@ -83,7 +74,7 @@ export default function SignIn() {
           </div>
           <button className='w-3/5 flex gap-2 items-center justify-center px-5 py-2 rounded-full border border-[#8C8585]'>
             <Image src="/logo-black/github.svg" width={36} height={36} alt="Github"></Image>
-            <p className='font-bold'>Sign up with Github</p>
+            <p className='font-bold'>Continue with Github</p>
           </button>
         </div>
       </div>
