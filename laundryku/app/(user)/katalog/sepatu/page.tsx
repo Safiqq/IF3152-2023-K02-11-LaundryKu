@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
-import Pakaian from "./pakaian"
+import Sepatu from "./sepatu"
 
 export const metadata: Metadata = {
-  title: 'Katalog - Pakaian',
+  title: 'Katalog - Sepatu',
 }
 
 export default function Page() {
-  return (<Pakaian />)
+  return (<Sepatu />)
 }
