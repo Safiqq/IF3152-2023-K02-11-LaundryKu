@@ -1,5 +1,5 @@
 "use client"
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'
 
@@ -25,26 +25,24 @@ export default function SignUp() {
     } else {
       setPasswordError("");
       setEmailError("");
-      fetch(`/api/users/${payload.email}`,{
+      console.log(3)
+      console.log("payload", payload)
+      fetch('/api/users/', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       })
-      .then((res) => res.json())
       .then(res => {
-        if (payload.password === res.data.password) {
-          if (res.data.tipe === "pegawai") {
-            router.push("/laundry");
-          } else if (res.data.tipe === "pelanggan") {
-            router.push("/katalog/pakaian");
-          }
+        if (res.status === 200) {
+
         }
       })
     }
   }
-  const isValidEmail = (email: any) => {
+
+  const isValidEmail = (email: string) => {
     // Regular expression for a basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -90,11 +88,10 @@ export default function SignUp() {
                 type="nama"
                 name="nama"
                 className="w-4/6 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
-                placeholder="Nama" 
-                onChange={(e) => setPayload({...payload, nama: e.target.value})}
-                />
+                placeholder="Nama"
+                onChange={(e) => setPayload({ ...payload, nama: e.target.value })}
+              />
             </div>
-
             <div>
               <span className="my-1 after:content-['*'] after:ml-0.5 after:text-red-500 block text-xl font-bold text-slate-800">
                 Email
@@ -120,12 +117,12 @@ export default function SignUp() {
                 type="password"
                 name="password"
                 className="w-4/6 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
-                placeholder="•••••••••" 
+                placeholder="•••••••••"
                 onChange={(e) => {
                   setPayload({ ...payload, password: e.target.value });
                   setPasswordError("");
                 }}
-                />
+              />
             </div>
 
             <div>
@@ -136,7 +133,7 @@ export default function SignUp() {
                 type="password"
                 name="confirm-password"
                 className="w-4/6 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
-                placeholder="•••••••••" 
+                placeholder="•••••••••"
                 onChange={(e) => {
                   setPayload({ ...payload, confirmPassword: e.target.value });
                   setPasswordError("");

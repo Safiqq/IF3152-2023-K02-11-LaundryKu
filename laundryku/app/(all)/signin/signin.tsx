@@ -4,15 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-interface User {
-  id: number;
-  username: string;
-  nama: string;
-  email: string;
-  password: StaticRange;
-  tipe: string;
-};
-
 export default function SignIn() {
   const router = useRouter();
   const [payload, setPayload] = useState({
@@ -27,14 +18,18 @@ export default function SignIn() {
       fetch(`/api/users/${payload.email}`)
       .then((res) => res.json())
       .then(res => {
-        if (payload.password === res.data.password) {
-          if (res.data.tipe === "pegawai") {
-            router.push("/laundry");
-          } else if (res.data.tipe === "pelanggan") {
-            router.push("/katalog/pakaian");
+        if (res.data) {
+          if (payload.password === res.data.password) {
+            if (res.data.tipe === "Pegawai") {
+              router.push("/laundry");
+            } else if (res.data.tipe === "Pelanggan") {
+              router.push("/katalog/pakaian");
+            }
+          } else {
+            window.alert("Email atau password salah");
           }
-        } else {
-          window.alert("Email atau password salah");
+        }else {
+          window.alert("Email atau password salah")
         }
       })
     }

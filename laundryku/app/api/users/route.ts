@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -15,8 +15,16 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const payload = await req.json();
-    await prisma.user.create({data: payload});
+    let user: Prisma.UserCreateInput = await req.json();
+    user.tipe = "Pelanggan";
+    console.log(user)
+    // const data = await req.json();
+    // delete data.confirmPassword;
+    // console.log("tesestestes")
+    // console.log({...data, tipe: "Pelanggan"})
+    const a = await prisma.user.create({data: user});
+    console.log(a)
+    console.log("aaaaaaaaaaa")
     return Response.json({message: "success"})
   } catch (error) {
     return Response.json({error})

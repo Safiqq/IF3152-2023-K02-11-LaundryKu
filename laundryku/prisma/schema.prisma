@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,25 +12,15 @@ model Authentication {
   token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-enum UserType {
-  Pegawai
-  Pelanggan
+  deletedAt DateTime
 }
 
 model User {
   id       Int      @id @default(autoincrement())
-  username String   @unique
   nama     String
   email    String   @unique
-  password String   
+  password String
   tipe     UserType
-}
-
-enum StatusItem {
-  Aktif
-  TidakAktif
 }
 
 model Item {
@@ -42,15 +29,30 @@ model Item {
   harga      Int
   gambar     String
   kategori   String
-  status     StatusItem
-  keranjangs Keranjang[]
-  pesanans   Pesanan[]
+  keranjangs Keranjang[] @relation("ItemToKeranjang")
+  pesanans   Pesanan[]   @relation("ItemToPesanan")
 }
 
 model Keranjang {
-  id           Int @id @default(autoincrement())
-  items        Item[]
+  id           Int    @id @default(autoincrement())
   totalNominal Int
+  items        Item[] @relation("ItemToKeranjang")
+}
+
+model Pesanan {
+  id               Int              @id @default(autoincrement())
+  idUser           Int
+  waktuPemesanan   DateTime         @default(now())
+  nominalPemesanan Int
+  statusPesanan    StatusPesanan
+  buktiPembayaran  String
+  statusPembayaran StatusPembayaran
+  items            Item[]           @relation("ItemToPesanan")
+}
+
+enum UserType {
+  Pegawai
+  Pelanggan
 }
 
 enum StatusPesanan {
@@ -62,15 +64,4 @@ enum StatusPesanan {
 enum StatusPembayaran {
   BelumDibayar
   SudahDibayar
-}
-
-model Pesanan {
-  id               Int              @id @default(autoincrement())
-  idUser           Int
-  items            Item[]
-  waktuPemesanan   DateTime         @default(now())
-  nominalPemesanan Int
-  statusPesanan    StatusPesanan
-  buktiPembayaran  String
-  statusPembayaran StatusPembayaran
 }
