@@ -97,7 +97,7 @@ const data: Item[] = [
 ];
 
 export default function Laundry() {
-  const [isAddItem, setIsAddItem] = useState(false);
+  const [isAddItem, setIsAddModalOpen] = useState(false);
 
   return (
         <div className="px-12">
@@ -106,7 +106,7 @@ export default function Laundry() {
             <div
               className="flex items-center justify-center rounded-full px-6 py-1 gap-2 bg-[#7689E7] cursor-pointer"
               // onClick={() => ModalAddItem(onClose={() => console.log(1)})}
-              onClick={() => setIsAddItem(!isAddItem)}
+              onClick={() => setIsAddModalOpen(!isAddItem)}
             >
               <Image src="/logo-white/add-ring.svg" width={32} height={32} alt="Add Item"></Image>
               <p className="text-white font-bold">ADD NEW</p>
@@ -114,7 +114,7 @@ export default function Laundry() {
           </div>
           <Table
             data={data}
-            allowUpdate={true}
+            allowUpdateLaundry={true}
             allowDelete={true}
           />
         </div>

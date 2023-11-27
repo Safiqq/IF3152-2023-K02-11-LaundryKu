@@ -7,18 +7,21 @@ import ModalEditPesanan from "./modal/edit-pesanan";
 import Link from 'next/link'
 import ModalAddItem from "./modal/add-item";
 import ModalDeleteItem from "./modal/delete-item";
+import ModalEditLaundry from "./modal/edit-laundry";
 
 interface TableProps {
   data: any[];
-  allowUpdate?: boolean;
+  allowUpdatePesanan?: boolean;
+  allowUpdateLaundry?: boolean;
   allowDelete?: boolean;
   footer?: string[];
   isPagination?: boolean;
 }
 
-export default function Table({ data, allowUpdate, allowDelete, footer, isPagination }: TableProps) {
+export default function Table({ data, allowUpdatePesanan, allowUpdateLaundry, allowDelete, footer, isPagination }: TableProps) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditModalLaundryOpen, setIsEditModalLaundryOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const openAddItemModal = () => {
     setIsAddModalOpen(true);
@@ -26,6 +29,10 @@ export default function Table({ data, allowUpdate, allowDelete, footer, isPagina
   const openEditModal = (item: SetStateAction<null>) => {
     setSelectedItem(item);
     setIsEditModalOpen(true);
+  };
+  const openEditModalLaundry = (item: SetStateAction<null>) => {
+    setSelectedItem(item);
+    setIsEditModalLaundryOpen(true);
   };
   const openDeleteModal = (item: SetStateAction<null>) => {
     setSelectedItem(item);
@@ -37,6 +44,7 @@ export default function Table({ data, allowUpdate, allowDelete, footer, isPagina
     setIsEditModalOpen(false);
     setIsAddModalOpen(false);
     setIsDeleteModalOpen(false);
+    setIsEditModalLaundryOpen(false);
   };
 
 
@@ -76,14 +84,15 @@ export default function Table({ data, allowUpdate, allowDelete, footer, isPagina
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const allowUD = allowUpdate || allowDelete;
+  const allowUD = allowUpdatePesanan || allowUpdateLaundry ||  allowDelete;
 
   return (
     <div>
       <ModalEditPesanan isOpen={isEditModalOpen} item={selectedItem} onClose={closeModals} />
       <ModalAddItem isOpen={isAddModalOpen} onClose={closeModals} />
+      <ModalEditLaundry isOpen={isEditModalLaundryOpen} onClose={closeModals} />
       <ModalDeleteItem isOpen={isDeleteModalOpen} item={selectedItem} onClose={closeModals} />
-      {(isAddModalOpen || isEditModalOpen || isDeleteModalOpen) && <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50"> </div>}
+      {(isAddModalOpen || isEditModalOpen || isDeleteModalOpen  || isEditModalLaundryOpen ) && <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50"> </div>}
       <table className="w-full text-center my-4 bg-white border-collapse">
         <thead className="text-lg uppercase bg-[#7689E7]">
           <tr>
@@ -114,7 +123,7 @@ export default function Table({ data, allowUpdate, allowDelete, footer, isPagina
               ))}
               {allowUD && (
                 <td className={`flex gap-2 justify-center ${padding}`}>
-                  {allowUpdate && (
+                  {allowUpdatePesanan && (
                     <Image
                       className="cursor-pointer"
                       src="logo-black/pencil.svg"
@@ -122,6 +131,16 @@ export default function Table({ data, allowUpdate, allowDelete, footer, isPagina
                       height={20}
                       alt="Update"
                       onClick={() => openEditModal(item)}
+                    />
+                  )}
+                   {allowUpdateLaundry && (
+                    <Image
+                      className="cursor-pointer"
+                      src="logo-black/pencil.svg"
+                      width={20}
+                      height={20}
+                      alt="Update"
+                      onClick={() => openEditModalLaundry(item)}
                     />
                   )}
                   {allowDelete && (

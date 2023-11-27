@@ -67,7 +67,7 @@ export default function Pesanan() {
   return (
     <div className="px-12">
       <h1>Manajemen Pesanan</h1>
-      <Table data={data} allowUpdate={true} />
+      <Table data={data} allowUpdatePesanan={true} />
     </div>
   );
 }
