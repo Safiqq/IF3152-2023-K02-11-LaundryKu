@@ -10,7 +10,7 @@ export function CardProduct(props: { data: any[]; crud: string[] }) {
         <div key={key} className="flex flex-col items-center ">
           <div className="bg-[#E5E5E5] w-full flex justify-center rounded-t-xl">
             <div className="my-6 h-[200px] w-[240px] mx-6 relative">
-              <Image src={item.img} alt={item.nama} layout="fill" />
+              <Image src={item.gambar} alt={item.nama} layout="fill" />
             </div>
           </div>
 

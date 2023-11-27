@@ -65,7 +65,7 @@ export default function Pakaian() {
       try {
         const response = await fetch('/api/items/pakaian');
         if (response.ok) {
-          const data = await response.json();
+          const data = (await response.json()).data;
           setDataProduk(data);
         } else {
           console.error('Failed to fetch data');
