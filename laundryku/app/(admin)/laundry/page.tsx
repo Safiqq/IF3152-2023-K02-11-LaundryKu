@@ -125,6 +125,8 @@ export default function Laundry(props:{isWideScreen: boolean}) {
           <Table
             id="table"
             data={data}
+            allowUpdate={true}
+            allowDelete={true}
           />
         </div>
     //   </div>

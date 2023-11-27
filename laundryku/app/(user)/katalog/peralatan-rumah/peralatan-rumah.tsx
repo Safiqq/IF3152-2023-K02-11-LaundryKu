@@ -37,10 +37,9 @@ export default function PeralatanRumah() {
       <Header />
       <div className="h-[20vh]"></div>
       <h1 className={`text-black gap-20 m-16 ${cardContainerClass}`}>
-        {dataProduk.length > 0 &&
-          dataProduk.map((dataItem, index) => (
-            <CardProduct key={index} data={[dataItem]} crud={["a"]} />
-          ))}
+        {dataProduk.length > 0 && dataProduk.map((dataItem, index) => (
+          <CardProduct key={index} data={[dataItem]} allowCreate={true} />
+        ))}
       </h1>
       {loading && (
         <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50">

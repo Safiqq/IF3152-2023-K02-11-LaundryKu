@@ -8,10 +8,10 @@ import Link from "next/link";
 
 export default function TableUser(props: {
   data: any[];
-  rud?: string[];
+  allowDelete?: boolean;
   footer?: string[];
 }) {
-  const { data: InitialData, rud, footer } = props;
+  const { data: InitialData, allowDelete, footer } = props;
   const titles = Object.keys(InitialData[0]);
   const currencyIndexes = titles
     .map((title, index) => (title.includes("total") ? index : undefined))
@@ -40,14 +40,26 @@ export default function TableUser(props: {
 
   const handleQuantityChange = (index: number, newQuantity: number) => {
     if (!originalPrices) return;
-
+  
     const originalPrice = originalPrices[index];
     const newData = [...InitialData];
-    newData[index].quantity = newQuantity;
-    newData[index].total_price = newQuantity * originalPrice;
-
-    console.log("originalPrice", originalPrice);
-
+  
+    if (newQuantity === 0) {
+      // Remove the item from the data array
+      newData.splice(index, 1);
+    } else {
+      // Update quantity and total price
+      newData[index].quantity = newQuantity;
+      newData[index].total_price = newQuantity * originalPrice;
+    }
+  
+    setTotalPrice(
+      newData.reduce(
+        (accumulator, currentItem) => accumulator + currentItem.total_price,
+        0
+      )
+    );
+  
     setData(newData);
   };
 
@@ -78,7 +90,7 @@ export default function TableUser(props: {
                 {idx === 0 ? "product" : item.replaceAll("_", " ")}
               </th>
             ))}
-            {rud && <th className={padding}></th>}
+            {allowDelete && <th className={padding}></th>}
           </tr>
         </thead>
         <tbody>
@@ -98,7 +110,7 @@ export default function TableUser(props: {
                         onClick={() =>
                           handleQuantityChange(
                             index + (currentPage - 1) * 5,
-                            (val as number) - 1
+                            Math.max(0, (val as number) - 1) 
                           )
                         }
                         className="px-2 text-2xl"
@@ -146,9 +158,9 @@ export default function TableUser(props: {
                   )}
                 </td>
               ))}
-              {rud && (
+              {allowDelete && (
                 <td className={``}>
-                  {rud[0] === "d" ? (
+                  {allowDelete && (
                     <div className="flex flex-col justify-center items-center">
                       <X
                         className="cursor-pointer "
@@ -157,8 +169,6 @@ export default function TableUser(props: {
                         }
                       />
                     </div>
-                  ) : (
-                    rud.toString()
                   )}
                 </td>
               )}
@@ -170,12 +180,12 @@ export default function TableUser(props: {
                 <td key={idx}>
                   <div
                     className={`h-1.5 bg-[#7689E7] ${idx === 0 && "ml-8"} ${
-                      idx == titles.length - 1 && !rud && "mr-8"
+                      idx == titles.length - 1 && !allowDelete && "mr-8"
                     }`}
                   ></div>
                 </td>
               ))}
-              {rud && (
+              {allowDelete && (
                 <td>
                   <div className="h-1.5 bg-[#7689E7] mr-8"></div>
                 </td>

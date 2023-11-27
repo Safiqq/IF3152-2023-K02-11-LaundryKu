@@ -79,7 +79,7 @@ export default function Pesanan(props: {isWideScreen:boolean}) {
     //     </div>
         <div className="px-12">
           <h1>Manajemen Pesanan</h1>
-          <Table id="manajemen-pesanan" data={data} rud={["u"]} />
+          <Table data={data} allowUpdate={true} />
         </div>
     //   </div>
     // </main>

@@ -71,7 +71,7 @@ export default function Keranjang() {
         <div className="col-span-7 text-black flex flex-col items-center text-2xl m-16">
           <div className=" w-full">
             <p className="font-bold text-[36px] mb-8">Shopping Cart</p>
-            <TableUser data={data} rud={["d"]} />
+            <TableUser data={data} allowDelete={true} />
           </div>
         </div>
         <div className="col-span-5 flex flex-col items-center m-16">
@@ -100,6 +100,15 @@ export default function Keranjang() {
                 <p className="font-semibold text-base mt-2">.PDF .JPG .PNG .DOC</p>
                 <p className="font-semibold text-base">Drag and Drop your files here</p>
               </label>
+              <div className="flex flex-row justify-between w-10/12 mt-6">
+                <div className="text-[#706464] py-2 px-16 text-lg font-bold border-2 border-[#706464] rounded-full cursor-pointer hover:bg-[#dedcdc]">
+                  Cancel
+                </div>
+                <div className="text-white py-2 px-16 bg-[#7689E7] hover:bg-[#5365c1] text-lg font-bold rounded-full cursor-pointer">
+                  Submit
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
