@@ -15,6 +15,23 @@ interface TableProps {
 }
 
 export default function Table({ data, rud, footer, isPagination }: TableProps) {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddItemModalOpen, setIsAddItemModalOpen] = useState(false);
+  const openEditModal = (item: SetStateAction<null>) => {
+    setSelectedItem(item);
+    setIsEditModalOpen(true);
+  };
+  const openAddItemModal = () => {
+    setIsAddItemModalOpen(true);
+  };
+
+  const closeModals = () => {
+    setSelectedItem(null);
+    setIsEditModalOpen(false);
+    setIsAddItemModalOpen(false);
+  };
+
+
   const titles = Object.keys(data[0]);
   const indexes = {
     currency: getIndexes(["harga", "nominal"], titles),
@@ -64,8 +81,9 @@ export default function Table({ data, rud, footer, isPagination }: TableProps) {
 
   return (
     <div>
-      <ModalEditPesanan isOpen={isModalOpen} item={selectedItem} onClose={closeModal} />
-      <ModalAddItem isOpen={isModalOpen} onClose={closeModal} />
+       <ModalEditPesanan isOpen={isEditModalOpen} item={selectedItem} onClose={closeModals} />
+      <ModalAddItem isOpen={isAddItemModalOpen} onClose={closeModals} />
+
       <table className="w-full text-center my-4 bg-white border-collapse">
         <thead className="text-lg uppercase bg-[#7689E7]">
           <tr>
@@ -103,7 +121,7 @@ export default function Table({ data, rud, footer, isPagination }: TableProps) {
                       width={16}
                       height={16}
                       alt="Update"
-                      onClick={() => openModal(item)}
+                      onClick={() => openEditModal(item)}
                     />
                   ) : (
                     rud.toString()
