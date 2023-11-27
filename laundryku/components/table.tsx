@@ -8,6 +8,7 @@ import Link from 'next/link'
 import ModalAddItem from "./modal/add-item";
 
 interface TableProps {
+  id :string;
   data: any[];
   rud?: string[];
   footer?: string[];

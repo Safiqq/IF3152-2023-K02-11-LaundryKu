@@ -123,6 +123,7 @@ export default function Laundry(props:{isWideScreen: boolean}) {
             </div>
           </div>
           <Table
+            id="table"
             data={data}
           />
         </div>

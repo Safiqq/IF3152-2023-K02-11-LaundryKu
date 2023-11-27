@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
+import dynamic from 'next/dynamic';  // Import dynamic from 'next/dynamic'
 import Sidebar from "@/components/sidebar";
 import Searchbar from "@/components/searchbar";
 import { Dropdown, DropdownElement } from "@/components/dropdown";
@@ -22,6 +23,7 @@ const data: LaporanTransaksi[] = [
     nama_barang: "Kaos",
     harga: 10000,
     jumlah: 1,
+
   },
   {
     id: 2,
@@ -84,6 +86,15 @@ for (let i = 0; i < data.length; i++) {
 }
 
 export default function Laporan() {
+  const html2pdf = dynamic(() => import('html2pdf.js'), { ssr: false });
+
+  const exportToPDF = () => {
+    const element = document.getElementById('laporan-table');
+    if (element) {
+      html2pdf(element);
+    }
+  };
+
   const [jenisLaporan, setJenisLaporan] = useState("harian");
   const [value, setValue] = useState({
     startDate: new Date(),
@@ -134,9 +145,9 @@ export default function Laporan() {
 
   const handleBlurDatepicker = (e: React.FocusEvent) => {
     if (e.relatedTarget === null) {
-    setSingleDatepicker(jenisLaporan === "harian")
-    }
-  }
+      setSingleDatepicker(jenisLaporan === "harian")
+      }
+  };
 
   const dropdownElements: DropdownElement[] = [
     {
@@ -176,13 +187,18 @@ export default function Laporan() {
             />
           </div>
         </div>
-        <div>
-          <button className="bg-[#7689E7] hover:bg-[#6879CB] text-white font-bold py-3 px-5 rounded-full">
+        <div className="justify-end items-end">
+          <button
+            className="justify-end items-end bg-[#7689E7] hover:bg-[#6879CB] text-white font-bold py-3 px-5 rounded-full"
+            onClick={exportToPDF}
+          >
             Cetak Laporan
           </button>
         </div>
       </div>
+    
       <Table
+        id="laporan-table"
         data={data}
         footer={[
           "Total Pemasukan",

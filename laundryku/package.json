@@ -19,6 +19,8 @@
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "dayjs": "^1.11.10",
+    "html2pdf.js": "^0.10.1",
+    "jspdf": "^2.5.1",
     "lucide-react": "^0.293.0",
     "next": "14.0.1",
     "next-auth": "^5.0.0-beta.3",
@@ -26,6 +28,7 @@
     "react": "^18.2.0",
     "react-bootstrap-icons": "^1.10.3",
     "react-dom": "^18.2.0",
+    "react-pdf": "^7.5.1",
     "react-tailwindcss-datepicker": "^1.6.6",
     "tailwind-merge": "^2.0.0"
   },
