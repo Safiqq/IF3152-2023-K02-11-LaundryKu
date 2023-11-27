@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Table from "@/components/table";
+import ModalAddItem from "@/components/modal/add-item"
 
 interface Item {
   id: number;
@@ -97,7 +98,12 @@ const data: Item[] = [
 ];
 
 export default function Laundry() {
-  const [isAddItem, setIsAddModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Function to open the modal
+  const openAddItemModal = () => {
+    setIsAddModalOpen(true);
+  };
 
   return (
         <div className="px-12">
@@ -106,17 +112,15 @@ export default function Laundry() {
             <div
               className="flex items-center justify-center rounded-full px-6 py-1 gap-2 bg-[#7689E7] cursor-pointer"
               // onClick={() => ModalAddItem(onClose={() => console.log(1)})}
-              onClick={() => setIsAddModalOpen(!isAddItem)}
+              onClick={openAddItemModal}
             >
               <Image src="/logo-white/add-ring.svg" width={32} height={32} alt="Add Item"></Image>
               <p className="text-white font-bold">ADD NEW</p>
             </div>
           </div>
-          <Table
-            data={data}
-            allowUpdateLaundry={true}
-            allowDelete={true}
-          />
+          <Table data={data} allowUpdateLaundry={true} allowDelete={true} />
+      {/* Pass setIsAddModalOpen to ModalAddItem component */}
+      <ModalAddItem isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} setIsAddModalOpen={setIsAddModalOpen} />
         </div>
   );
 }

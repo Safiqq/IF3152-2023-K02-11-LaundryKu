@@ -79,8 +79,11 @@ const ModalAddItem = (props: ModalAddItemProps) => {
   };
 
   return (
-    <div className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto">
+    
+    <div className="fixed inset-0 z-20 flex items-center justify-center overflow-y-auto">
+      
       <div className="bg-white w-full max-w-lg p-6 rounded-2xl shadow-xl">
+        
         <div className="flex flex-col mb-4">
           <p className="text-2xl font-bold text-black flex justify-center mb-10" id="modal-title">
             Tambah Data Laundry
