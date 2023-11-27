@@ -14,7 +14,8 @@ export default function SignUp() {
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
 
-  const handleSignUp = () => {
+  const handleSignUp = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
     if (payload.nama === "" || payload.email === "" || payload.password === "" || payload.confirmPassword === "") {
       window.alert("Form tidak boleh kosong");
     } else if (payload.password !== payload.confirmPassword) {
@@ -143,7 +144,6 @@ export default function SignUp() {
             </div>
           </div>
           <button
-            type="button"
             className="w-4/6 text-[20px] font-semibold text-white bg-[#7689E7] hover:bg-[#6272C1] focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full text-md px-5 py-3 text-center dark:bg-[#7689E7] dark:hover:bg-[#6272C1] dark:focus:ring-white"
             onClick={handleSignUp}
           >

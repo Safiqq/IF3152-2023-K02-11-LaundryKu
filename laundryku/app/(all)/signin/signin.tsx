@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -11,7 +11,8 @@ export default function SignIn() {
     password: "",
   });
 
-  const handleSignIn = () => {
+  const handleSignIn = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
     if (payload.email === "" && payload.password === "") {
       window.alert("Form tidak boleh kosong");
     } else {
@@ -95,7 +96,6 @@ export default function SignIn() {
             </div>
           </div>
           <button
-            type="button"
             className="w-4/6 text-[20px] font-semibold text-white bg-[#7689E7] hover:bg-[#6272C1] focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full text-md px-5 py-3 text-center dark:bg-[#7689E7] dark:hover:bg-[#6272C1] dark:focus:ring-white"
             onClick={handleSignIn}
           >
