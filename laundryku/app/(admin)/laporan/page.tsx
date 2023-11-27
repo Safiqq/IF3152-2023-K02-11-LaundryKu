@@ -1,13 +1,15 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
-import dynamic from 'next/dynamic';  // Import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic"; // Import dynamic from 'next/dynamic'
 import Sidebar from "@/components/sidebar";
 import Searchbar from "@/components/searchbar";
 import { Dropdown, DropdownElement } from "@/components/dropdown";
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import Table from "@/components/table";
 import { toCurrency } from "@/lib/utils";
+import { CSVLink } from "react-csv";
+import { format } from 'date-fns';
 
 interface LaporanTransaksi {
   id: number;
@@ -23,7 +25,6 @@ const data: LaporanTransaksi[] = [
     nama_barang: "Kaos",
     harga: 10000,
     jumlah: 1,
-
   },
   {
     id: 2,
@@ -86,21 +87,35 @@ for (let i = 0; i < data.length; i++) {
 }
 
 export default function Laporan() {
-  const html2pdf = dynamic(() => import('html2pdf.js'), { ssr: false });
-
-  const exportToPDF = () => {
-    const element = document.getElementById('laporan-table');
-    if (element) {
-      html2pdf(element);
-    }
-  };
-
   const [jenisLaporan, setJenisLaporan] = useState("harian");
   const [value, setValue] = useState({
     startDate: new Date(),
     endDate: new Date(),
   });
   const [singleDatepicker, setSingleDatepicker] = useState(true);
+
+  const generateCSVData = () => {
+    const csvData = [
+      ["ID", "Nama Barang", "Harga", "Jumlah", "Harga Total"],
+      ...data.map((item) => [
+        item.id.toString(),
+        item.nama_barang,
+        item.harga.toString(),
+        item.jumlah.toString(),
+        (item.harga_total || 0).toString(),
+      ]),
+    ];
+    return csvData;
+  };
+
+  const generateFilename = () => {
+    if (jenisLaporan === 'harian') {
+      return `laporan-${format(value.startDate, 'dd-MM-yyyy')}.csv`;
+    } else {
+      // Add logic for other date ranges if needed
+      return 'laporan.csv';
+    }
+  };
 
   const handleChangeDatepicker = (newValue: DateValueType) => {
     if (newValue?.startDate) {
@@ -110,13 +125,13 @@ export default function Laporan() {
         endDate: new Date(
           endDate.setDate(
             endDate.getDate() +
-            (jenisLaporan === "harian"
-              ? 1
-              : jenisLaporan === "mingguan"
-                ? 7
-                : 30) -
-            1,
-          ),
+              (jenisLaporan === "harian"
+                ? 1
+                : jenisLaporan === "mingguan"
+                  ? 7
+                  : 30) -
+              1
+          )
         ),
       });
     }
@@ -132,21 +147,31 @@ export default function Laporan() {
   }, []);
 
   const handleClickDatepicker = (e: React.MouseEvent<HTMLElement>) => {
-    const classNames = Array.from((e.target as HTMLElement).classList)
-    const classNamesTarget = ["flex", "items-center", "justify-center", "w-12", "h-12", "lg:w-10", "lg:h-10"];
-    if (classNames.length === classNamesTarget.length &&
-      classNames.every((element, index) => element === classNamesTarget[index])) {
-        setSingleDatepicker(jenisLaporan === "harian");
-      }
-      if ((e.target as HTMLElement).tagName === "INPUT") {
+    const classNames = Array.from((e.target as HTMLElement).classList);
+    const classNamesTarget = [
+      "flex",
+      "items-center",
+      "justify-center",
+      "w-12",
+      "h-12",
+      "lg:w-10",
+      "lg:h-10",
+    ];
+    if (
+      classNames.length === classNamesTarget.length &&
+      classNames.every((element, index) => element === classNamesTarget[index])
+    ) {
+      setSingleDatepicker(jenisLaporan === "harian");
+    }
+    if ((e.target as HTMLElement).tagName === "INPUT") {
       setSingleDatepicker(true);
     }
   };
 
   const handleBlurDatepicker = (e: React.FocusEvent) => {
     if (e.relatedTarget === null) {
-      setSingleDatepicker(jenisLaporan === "harian")
-      }
+      setSingleDatepicker(jenisLaporan === "harian");
+    }
   };
 
   const dropdownElements: DropdownElement[] = [
@@ -169,10 +194,7 @@ export default function Laporan() {
       <div className="flex justify-between items-center gap-4">
         <div className="flex items-center gap-4">
           <Dropdown elements={dropdownElements} type={1}></Dropdown>
-          <div
-            onClick={handleClickDatepicker}
-            onBlur={handleBlurDatepicker}
-          >
+          <div onClick={handleClickDatepicker} onBlur={handleBlurDatepicker}>
             <Datepicker
               asSingle={singleDatepicker}
               useRange={true}
@@ -188,22 +210,24 @@ export default function Laporan() {
           </div>
         </div>
         <div className="justify-end items-end">
-          <button
-            className="justify-end items-end bg-[#7689E7] hover:bg-[#6879CB] text-white font-bold py-3 px-5 rounded-full"
-            onClick={exportToPDF}
-          >
-            Cetak Laporan
-          </button>
+          <CSVLink data={generateCSVData()} filename={generateFilename()}>
+            <button
+              className="justify-end items-end bg-[#7689E7] hover:bg-[#6879CB] text-white font-bold py-3 px-5 rounded-full"
+              // onClick={exportToPDF}
+            >
+              Cetak Laporan
+            </button>
+          </CSVLink>
         </div>
       </div>
-    
+
       <Table
         id="laporan-table"
         data={data}
         footer={[
           "Total Pemasukan",
           toCurrency(
-            data.reduce((acc, item) => acc + (item.harga_total || 0), 0),
+            data.reduce((acc, item) => acc + (item.harga_total || 0), 0)
           ),
         ]}
       />
