@@ -58,7 +58,7 @@ export default function SignIn() {
             <h3 className='text-[14px] font-semibold'>Don't have any account?
               <button
                 type="button"
-                className="ml-3 inline-block rounded-full border-2 border-[##999696] px-8 py-3 text-sm font-medium uppercase leading-normal text-[#7689E7] transition duration-150 ease-in-out hover:border-[#7689E7] hover:bg-neutral-500 hover:bg-opacity-10 hover:text-[#7689E7] focus:border-[#7689E7] focus:text-[#7689E7] focus:outline-none focus:ring-0 active:border-[#7689E7] active:text-[#7689E7] dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
+                className="ml-3 font-bold inline-block rounded-full border-2 border-[##999696] px-8 py-3 text-sm uppercase leading-normal text-[#7689E7] transition duration-150 ease-in-out hover:border-[#7689E7] hover:bg-neutral-500 hover:bg-opacity-10 hover:text-[#7689E7] focus:border-[#7689E7] focus:text-[#7689E7] focus:outline-none focus:ring-0 active:border-[#7689E7] active:text-[#7689E7] dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
                 data-te-ripple-init
                 onClick={() => router.push('/signup')}
               >
@@ -101,7 +101,7 @@ export default function SignIn() {
           </div>
           <button
             type="button"
-            className="w-4/6 text-white bg-[#7689E7] hover:bg-[#6272C1] focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-md px-5 py-3 text-center dark:bg-[#7689E7] dark:hover:bg-[#6272C1] dark:focus:ring-white"
+            className="w-4/6 text-[20px] font-semibold text-white bg-[#7689E7] hover:bg-[#6272C1] focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full text-md px-5 py-3 text-center dark:bg-[#7689E7] dark:hover:bg-[#6272C1] dark:focus:ring-white"
             onClick={handleSignIn}
           >
             Sign In
@@ -113,7 +113,7 @@ export default function SignIn() {
           </div>
           <button className='w-4/6 flex gap-2 items-center justify-center px-5 py-2 rounded-full border border-[#8C8585]' onClick={() => router.push('api/auth/signin')}>
             <Image src="/logo-black/github.svg" width={36} height={36} alt="Github"></Image>
-            <p className='font-bold'>Continue with Github</p>
+            <p className='font-bold text-[20px]'>Continue with Github</p>
           </button>
         </div>
       </div>
