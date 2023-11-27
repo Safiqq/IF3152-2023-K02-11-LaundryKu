@@ -5,31 +5,37 @@ import TableUser from "@/components/table-user";
 
 const data = [
   {
+    image: "/product/image1.png",
     product: "Pakaian - Kaos",
     quantity: 1,
     total_price: 5000,
   },
   {
+    image: "/product/image1.png",
     product: "Pakaian - Celana Panjang",
     quantity: 2,
     total_price: 6000,
   },
   {
+    image: "/product/image1.png",
     product: "Pakaian - Sepatu Tinggi",
     quantity: 1,
     total_price: 5000,
   },
   {
+    image: "/product/image1.png",
     product: "Pakaian - Sepatu Tinggi",
     quantity: 1,
     total_price: 30000,
   },
   {
+    image: "/product/image1.png",
     product: "Pakaian - Sepatu Tinggi",
     quantity: 1,
     total_price: 30000,
   },
   {
+    image: "/product/image1.png", 
     product: "Pakaian - Sepatu Tinggi",
     quantity: 1,
     total_price: 30000,
@@ -38,7 +44,7 @@ const data = [
 
 export default function Keranjang() {
   return (
-    <>
+    <main className="flex flex-col min-w-screen min-h-screen bg-white">
       <Header />
       <div className="h-[20vh]"></div>
       <div className="grid grid-cols-12  min-h-[80vh]">
@@ -49,7 +55,7 @@ export default function Keranjang() {
           </div>
         </div>
         <div className="col-span-5 flex flex-col items-center m-16">
-          <div className="flex flex-col items-center w-11/12 bg-[#F5F7FF] rounded-2xl drop-shadow-xl">
+          <div className="flex flex-col w-11/12 bg-[#F5F7FF] rounded-2xl drop-shadow-xl sticky top-52">
             <div className="flex flex-col items-center w-full my-12">
               <p className=" text-black text-[32px] font-bold">
                 Payment Detail
@@ -77,13 +83,13 @@ export default function Keranjang() {
                   Cancel
                 </div>
                 <div className="text-white py-2 px-16 bg-[#7689E7] hover:bg-[#5365c1] text-lg font-bold rounded-full cursor-pointer">
-                  Upload
+                  Submit
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 }

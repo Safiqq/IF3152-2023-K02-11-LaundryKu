@@ -1,6 +1,6 @@
 import React from "react";
 import { CardProduct } from "@/components/card-product";
-import Header from "@/components/navbar";
+import { Header } from "@/components/header";
 
 const dataProduk = [
   {

@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
     icons: {
-        icon: "logo.svg"
+        icon: "/logo.svg"
     }
 }
 

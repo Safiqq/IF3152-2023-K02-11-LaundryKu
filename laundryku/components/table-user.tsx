@@ -3,7 +3,7 @@
 import Button from "@/components/button";
 import { useEffect, useState } from "react";
 import { X } from "react-bootstrap-icons";
-import Modal from "./modal/edit-pesanan";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function TableUser(props: {
@@ -18,7 +18,7 @@ export default function TableUser(props: {
     .filter((index) => index !== undefined);
 
   const dataAwal = InitialData;
-  const padding = "px-4 py-4";
+  const padding = "px-2 py-4";
   const totalData = InitialData.length;
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,10 +71,11 @@ export default function TableUser(props: {
             {titles.map((item, idx) => (
               <th
                 key={idx}
-                className={`px-4 py-2 text-[#8C8F96] font-semibold ${item === "product" ? "text-left" : ""
-                  }`}
+                className={`px-4 py-2 text-[#8C8F96] font-semibold ${
+                  idx === 0 ? "text-left " : item === "product" ? "invisible" : ""
+                }`}
               >
-                {item.replaceAll("_", " ")}
+                {idx === 0 ? "product" : item.replaceAll("_", " ")}
               </th>
             ))}
             {rud && <th className={padding}></th>}
@@ -89,9 +90,9 @@ export default function TableUser(props: {
               {Object.values(item).map((val, idx) => (
                 <td
                   key={idx}
-                  className={`${padding} ${idx === 0 ? "text-left" : ""}`}
+                  className={`${padding} ${idx === 1 ? "text-left" : ""}`}
                 >
-                  {idx === 1 ? (
+                  {idx === 2 ? (
                     <div className="flex items-center justify-center">
                       <button
                         onClick={() =>
@@ -126,18 +127,36 @@ export default function TableUser(props: {
                     </div>
                   ) : currencyIndexes.includes(idx) ? (
                     toCurrency(val as number)
+                  ) : idx === 0 ? (
+                    <div className="flex flex-col items-start">
+                      <Image
+                        src={`${val as string}`}
+                        alt="LaundryKu Logo"
+                        width={125}
+                        height={125}
+                        
+                        className="rounded-xl"
+                      />
+                    </div>
                   ) : (
-                    (val as string)
+                    <p className="font-semibold">
+                        {val as string}
+                    </p>
+                    
                   )}
                 </td>
               ))}
               {rud && (
-                <td className={`${padding} flex justify-center`}>
+                <td className={``}>
                   {rud[0] === "d" ? (
-                    <X
-                      className="cursor-pointer"
-                      onClick={() => console.log(index + (currentPage - 1) * 5)}
-                    />
+                    <div className="flex flex-col justify-center items-center">
+                      <X
+                        className="cursor-pointer "
+                        onClick={() =>
+                          console.log(index + (currentPage - 1) * 5)
+                        }
+                      />
+                    </div>
                   ) : (
                     rud.toString()
                   )}
@@ -150,8 +169,9 @@ export default function TableUser(props: {
               {titles.map((_, idx) => (
                 <td key={idx}>
                   <div
-                    className={`h-1.5 bg-[#7689E7] ${idx === 0 && "ml-8"} ${idx == titles.length - 1 && !rud && "mr-8"
-                      }`}
+                    className={`h-1.5 bg-[#7689E7] ${idx === 0 && "ml-8"} ${
+                      idx == titles.length - 1 && !rud && "mr-8"
+                    }`}
                   ></div>
                 </td>
               ))}
@@ -169,8 +189,9 @@ export default function TableUser(props: {
           <button
             onClick={() => setCurrentPage(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`${currentPage === 1 ? "text-[#9b9b9b]" : "text-black"
-              } bg-[#D9D9D9] px-4 py-1 rounded-l-full`}
+            className={`${
+              currentPage === 1 ? "text-[#9b9b9b]" : "text-black"
+            } bg-[#D9D9D9] px-4 py-1 rounded-l-full`}
           >
             {"<<"}
           </button>
@@ -178,8 +199,9 @@ export default function TableUser(props: {
           <button
             onClick={() => setCurrentPage(currentPage + 1)}
             disabled={currentPage === maxPageData}
-            className={`${currentPage === maxPageData ? "text-[#9b9b9b]" : "text-black"
-              } bg-[#D9D9D9] px-4 py-1 rounded-r-full`}
+            className={`${
+              currentPage === maxPageData ? "text-[#9b9b9b]" : "text-black"
+            } bg-[#D9D9D9] px-4 py-1 rounded-r-full`}
           >
             {">>"}
           </button>
