@@ -13,9 +13,9 @@ export default function Tas() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/items/sepatu");
+        const response = await fetch("/api/items/tas");
         if (response.ok) {
-          const data = await response.json();
+          const data = (await response.json()).data;
           setDataProduk(data);
         } else {
           console.error("Failed to fetch data");

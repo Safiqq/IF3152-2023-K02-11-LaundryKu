@@ -15,7 +15,7 @@ export default function PeralatanRumah() {
         setLoading(true);
         const response = await fetch("/api/items/peralatan%20rumah");
         if (response.ok) {
-          const data = await response.json();
+          const data = (await response.json()).data;
           setDataProduk(data);
         } else {
           console.error("Failed to fetch data");
