@@ -152,39 +152,45 @@ export default function Laporan() {
       onClick: () => setJenisLaporan("bulanan"),
     },
   ];
-
   return (
-        <div className="px-12">
-          <h1>Laporan Transaksi</h1>
-          <div className="flex items-center gap-4">
-            <Dropdown elements={dropdownElements} type={1}></Dropdown>
-            <div
-              onClick={handleClickDatepicker}
-              onBlur={handleBlurDatepicker}
-            >
-              <Datepicker
-                asSingle={singleDatepicker}
-                useRange={true}
-                separator="-"
-                readOnly={true}
-                inputClassName="w-56 rounded-full text-center bg-[#7689E7] text-white focus:outline-none h-11 font-semibold"
-                containerClassName="relative"
-                toggleClassName="hidden"
-                displayFormat="DD MMM YYYY"
-                value={value}
-                onChange={handleChangeDatepicker}
-              />
-            </div>
+    <div className="px-12">
+      <h1>Laporan Transaksi</h1>
+      <div className="flex justify-between items-center gap-4">
+        <div className="flex items-center gap-4">
+          <Dropdown elements={dropdownElements} type={1}></Dropdown>
+          <div
+            onClick={handleClickDatepicker}
+            onBlur={handleBlurDatepicker}
+          >
+            <Datepicker
+              asSingle={singleDatepicker}
+              useRange={true}
+              separator="-"
+              readOnly={true}
+              inputClassName="w-56 rounded-full text-center bg-[#7689E7] text-white focus:outline-none h-11 font-semibold"
+              containerClassName="relative"
+              toggleClassName="hidden"
+              displayFormat="DD MMM YYYY"
+              value={value}
+              onChange={handleChangeDatepicker}
+            />
           </div>
-          <Table
-            data={data}
-            footer={[
-              "Total Pemasukan",
-              toCurrency(
-                data.reduce((acc, item) => acc + (item.harga_total || 0), 0),
-              ),
-            ]}
-          />
         </div>
+        <div>
+          <button className="bg-[#7689E7] hover:bg-[#6879CB] text-white font-bold py-3 px-5 rounded-full">
+            Cetak Laporan
+          </button>
+        </div>
+      </div>
+      <Table
+        data={data}
+        footer={[
+          "Total Pemasukan",
+          toCurrency(
+            data.reduce((acc, item) => acc + (item.harga_total || 0), 0),
+          ),
+        ]}
+      />
+    </div>
   );
 }
