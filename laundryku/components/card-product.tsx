@@ -1,26 +1,49 @@
 import { toCurrency } from "@/lib/utils";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-export function CardProduct(props: { item: any; allowCreate?: boolean, user_id?: number }) {
-  const { item, allowCreate } = props;
+export function CardProduct(props: { item: any; allowCreate?: boolean, idUser?: number }) {
+  const { item, allowCreate, idUser } = props;
+  const router = useRouter();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     console.log('data', item)
-    fetch("/api/keranjangs/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message === "success") {
-          setLoading(true);
-          router.push("/katalog/pakaian");
+    // Cek apakah sdh ada keranjang
+    fetch(`/api/keranjangs/${idUser}`)
+      .then(res => res.json())
+      .then(res => {
+        console.log('res.error', res.error);
+
+        if (res.error) {
+          // If there is no shopping cart, create a new one
+          fetch("/api/keranjangs/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              idUser,
+              totalNominal: item.harga,
+              items: [item.id]
+            }),
+          })
+            .then(res => res.json())
+            .then(res => console.log('new cart', res));
         } else {
-          window.alert(res.error);
-          setLoading(false);
+          console.log('existing cart', res.data);
+
+          // If there is an existing shopping cart, update it
+          fetch(`/api/keranjangs/${idUser}`, {
+            method: "PATCH",  // Use PATCH instead of UPDATE
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              items: [...res.data.items, item.id],
+            }),
+          })
+            .then(res => res.json())
+            .then(res => console.log('updated cart', res));
         }
       });
   }

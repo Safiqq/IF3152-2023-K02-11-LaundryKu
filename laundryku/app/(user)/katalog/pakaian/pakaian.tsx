@@ -6,7 +6,6 @@ import { Header } from "@/components/header";
 import Image from "next/image";
 
 export default function Pakaian(id : any) {
-  console.log("id", id)
   const [dataProduk, setDataProduk] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +37,7 @@ export default function Pakaian(id : any) {
       <div className="h-[20vh]"></div>
       <h1 className="text-black grid grid-cols-5 gap-20 m-16">
         {dataProduk.length > 0 && dataProduk.map((dataItem, index) => (
-          <CardProduct key={index} item={dataItem} allowCreate={true} user_id={id}/>
+          <CardProduct key={index} item={dataItem} allowCreate={true} idUser={id}/>
         ))}
       </h1>
       {loading && (

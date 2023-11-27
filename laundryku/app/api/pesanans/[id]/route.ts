@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export async function GET({ params }: { params: { id: number } }) {
+export async function GET(req: Request, { params }: { params: { id: number } }) {
   try {
     const { id } = params
     const data = await prisma.pesanan.findFirst({

@@ -29,14 +29,13 @@ model Item {
   harga      Int
   gambar     String
   kategori   String
-  keranjangs Keranjang[] @relation("ItemToKeranjang")
-  pesanans   Pesanan[]   @relation("ItemToPesanan")
 }
 
 model Keranjang {
-  id           Int    @id
+  id           Int    @id @default(autoincrement())
+  idUser       Int
   totalNominal Int
-  items        Item[] @relation("ItemToKeranjang")
+  items        Json
 }
 
 model Pesanan {
@@ -47,7 +46,7 @@ model Pesanan {
   statusPesanan    StatusPesanan
   buktiPembayaran  String
   statusPembayaran StatusPembayaran
-  items            Item[]           @relation("ItemToPesanan")
+  items            Json
 }
 
 enum UserType {

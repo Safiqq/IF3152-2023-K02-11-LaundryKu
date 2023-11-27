@@ -2,15 +2,16 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export async function GET({ params }: { params: { id: number } }) {
+export async function GET(req: Request, { params }: { params: { idUser: number } }) {
   try {
-    const { id } = params
+    const { idUser } = params
     const data = await prisma.keranjang.findFirst({
       where:
-        { id }
+        { idUser }
     });
     return Response.json({ data });
   } catch (error) {
+    console.log(error)
     return Response.json({ error });
   } finally {
     await prisma.$disconnect();
