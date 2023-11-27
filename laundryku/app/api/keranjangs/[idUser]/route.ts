@@ -18,29 +18,14 @@ export async function GET(req: Request, { params }: { params: { idUser: number }
   }
 }
 
-export async function UPDATE(req: Request, { params }: { params: { id: number } }) {
+export async function UPDATE(req: Request, { params }: { params: { idUser: number } }) {
   try {
-    const { id } = params
+    const { idUser } = params
     const payload = await req.json();
     const data = await prisma.keranjang.update({
       where:
-        { id },
+        { idUser },
       data: payload,
-    });
-    return Response.json({ data });
-  } catch (error) {
-    return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
-export async function DELETE({ params }: { params: { id: number } }) {
-  try {
-    const { id } = params
-    const data = await prisma.keranjang.delete({
-      where:
-        { id },
     });
     return Response.json({ data });
   } catch (error) {

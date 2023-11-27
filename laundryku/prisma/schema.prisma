@@ -32,8 +32,7 @@ model Item {
 }
 
 model Keranjang {
-  id           Int    @id @default(autoincrement())
-  idUser       Int
+  idUser       Int  @id
   totalNominal Int
   items        Json
 }

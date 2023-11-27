@@ -1,19 +1,15 @@
 import { toCurrency } from "@/lib/utils";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
-export function CardProduct(props: { item: any; allowCreate?: boolean, idUser?: number }) {
+export function CardProduct(props: { item: any; allowCreate?: boolean, idUser?: any }) {
   const { item, allowCreate, idUser } = props;
-  const router = useRouter();
-
+  
   const handleAddToCart = async () => {
-    console.log('data', item)
     // Cek apakah sdh ada keranjang
-    fetch(`/api/keranjangs/${idUser}`)
+    fetch(`/api/keranjangs/${idUser.id}`)
       .then(res => res.json())
       .then(res => {
-        console.log('res.error', res.error);
-
+        console.log('res', res)
         if (res.error) {
           // If there is no shopping cart, create a new one
           fetch("/api/keranjangs/", {
@@ -22,7 +18,7 @@ export function CardProduct(props: { item: any; allowCreate?: boolean, idUser?: 
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              idUser,
+              idUser: idUser.id,
               totalNominal: item.harga,
               items: [item.id]
             }),
@@ -33,8 +29,8 @@ export function CardProduct(props: { item: any; allowCreate?: boolean, idUser?: 
           console.log('existing cart', res.data);
 
           // If there is an existing shopping cart, update it
-          fetch(`/api/keranjangs/${idUser}`, {
-            method: "PATCH",  // Use PATCH instead of UPDATE
+          fetch(`/api/keranjangs/${idUser.id}`, {
+            method: "PATCH",
             headers: {
               "Content-Type": "application/json",
             },
