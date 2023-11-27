@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 import Tas from "./tas"
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Katalog - Tas',
@@ -9,5 +11,12 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return (<Tas />)
+  const cookieStore = cookies();
+  if (cookieStore.has('session-token')) {
+    const parsedSessionToken = JSON.parse(cookieStore.get('session-token')?.value ?? '');
+    if (parsedSessionToken.tipe === "Pelanggan") {
+      return <Tas />;
+    }
+  }
+  return redirect("/signin");
 }

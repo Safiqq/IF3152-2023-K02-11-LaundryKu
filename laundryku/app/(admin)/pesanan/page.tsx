@@ -11,10 +11,14 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  const cookieStore = cookies()
-  if (cookieStore.get("next-auth.session-token")) {
-    return (<Pesanan />)
-  } else {
-    return redirect('/signin')
+  const cookieStore = cookies();
+  if (cookieStore.has('next-auth.session-token')) {
+    return <Pesanan />;
+  } else if (cookieStore.has('session-token')) {
+    const parsedSessionToken = JSON.parse(cookieStore.get('session-token')?.value ?? '');
+    if (parsedSessionToken.tipe === "Pegawai") {
+      return <Pesanan />;
+    }
   }
+  return redirect("/signin");
 }

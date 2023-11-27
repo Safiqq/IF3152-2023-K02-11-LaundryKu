@@ -1,13 +1,22 @@
 import { Metadata } from 'next'
 import Pakaian from "./pakaian"
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Katalog - Pakaian',
-  icons:  {
+  icons: {
     icon: "/logo.svg"
   }
 }
 
 export default function Page() {
-  return (<Pakaian />)
+  const cookieStore = cookies();
+  if (cookieStore.has('session-token')) {
+    const parsedSessionToken = JSON.parse(cookieStore.get('session-token')?.value ?? '');
+    if (parsedSessionToken.tipe === "Pelanggan") {
+      return <Pakaian />;
+    }
+  }
+  return redirect("/signin");
 }

@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+// import { cookies } from 'next/headers'
+import cookieCutter from 'cookie-cutter'
 
 export default function SignIn() {
   const router = useRouter();
@@ -27,6 +29,7 @@ export default function SignIn() {
             if (payload.password === res.data.password) {
               if (res.data.tipe === "Pegawai") {
                 router.push("/laundry");
+                cookieCutter.set('session-token', JSON.stringify(res.data))
               } else if (res.data.tipe === "Pelanggan") {
                 router.push("/katalog/pakaian");
               }
