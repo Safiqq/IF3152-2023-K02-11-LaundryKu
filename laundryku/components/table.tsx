@@ -6,30 +6,38 @@ import Image from 'next/image'
 import ModalEditPesanan from "./modal/edit-pesanan";
 import Link from 'next/link'
 import ModalAddItem from "./modal/add-item";
+import ModalDeleteItem from "./modal/delete-item";
 
 interface TableProps {
   id :string;
   data: any[];
-  rud?: string[];
+  allowUpdate?: boolean;
+  allowDelete?: boolean;
   footer?: string[];
   isPagination?: boolean;
 }
 
-export default function Table({ data, rud, footer, isPagination }: TableProps) {
+export default function Table({ data, allowUpdate, allowDelete, footer, isPagination }: TableProps) {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isAddItemModalOpen, setIsAddItemModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const openAddItemModal = () => {
+    setIsAddModalOpen(true);
+  };
   const openEditModal = (item: SetStateAction<null>) => {
     setSelectedItem(item);
     setIsEditModalOpen(true);
   };
-  const openAddItemModal = () => {
-    setIsAddItemModalOpen(true);
+  const openDeleteModal = (item: SetStateAction<null>) => {
+    setSelectedItem(item);
+    setIsDeleteModalOpen(true);
   };
 
   const closeModals = () => {
     setSelectedItem(null);
     setIsEditModalOpen(false);
-    setIsAddItemModalOpen(false);
+    setIsAddModalOpen(false);
+    setIsDeleteModalOpen(false);
   };
 
 
@@ -69,22 +77,14 @@ export default function Table({ data, rud, footer, isPagination }: TableProps) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = (item: SetStateAction<null>) => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setSelectedItem(null);
-    setIsModalOpen(false);
-  };
-
+  const allowUD = allowUpdate || allowDelete;
 
   return (
     <div>
-       <ModalEditPesanan isOpen={isEditModalOpen} item={selectedItem} onClose={closeModals} />
-      <ModalAddItem isOpen={isAddItemModalOpen} onClose={closeModals} />
-
+      <ModalEditPesanan isOpen={isEditModalOpen} item={selectedItem} onClose={closeModals} />
+      <ModalAddItem isOpen={isAddModalOpen} onClose={closeModals} />
+      <ModalDeleteItem isOpen={isDeleteModalOpen} item={selectedItem} onClose={closeModals} />
+      {(isAddModalOpen || isEditModalOpen || isDeleteModalOpen) && <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50"> </div>}
       <table className="w-full text-center my-4 bg-white border-collapse">
         <thead className="text-lg uppercase bg-[#7689E7]">
           <tr>
@@ -93,7 +93,7 @@ export default function Table({ data, rud, footer, isPagination }: TableProps) {
                 {item.replaceAll("_", " ")}
               </th>
             ))}
-            {rud && <th className={padding}></th>}
+            {allowUD && <th className={padding}></th>}
           </tr>
         </thead>
         <tbody>
@@ -113,28 +113,35 @@ export default function Table({ data, rud, footer, isPagination }: TableProps) {
                       ))}
                 </td>
               ))}
-              {rud && (
-                <td className={padding}>
-                  {rud[0] === "u" ? (
+              {allowUD && (
+                <td className={`flex gap-2 justify-center ${padding}`}>
+                  {allowUpdate && (
                     <Image
-                      // src="cursor-pointer"
+                      className="cursor-pointer"
                       src="logo-black/pencil.svg"
-                      width={16}
-                      height={16}
+                      width={20}
+                      height={20}
                       alt="Update"
                       onClick={() => openEditModal(item)}
                     />
-                  ) : (
-                    rud.toString()
+                  )}
+                  {allowDelete && (
+                    <Image
+                      className="cursor-pointer"
+                      src="logo-black/trash.svg"
+                      width={16}
+                      height={16}
+                      alt="Update"
+                      onClick={() => openDeleteModal(item)}
+                    />
                   )}
                 </td>
               )}
-
             </tr>
           ))}
           {footer &&
             <tr>
-              <td colSpan={titles.length + (rud ? 1 : 0)}>
+              <td colSpan={titles.length + (allowUD ? 1 : 0)}>
                 <div className="h-1.5 bg-[#7689E7] ml-8 mr-8"></div>
               </td>
             </tr>
@@ -143,7 +150,7 @@ export default function Table({ data, rud, footer, isPagination }: TableProps) {
         <tfoot>
           <tr>
             {footer &&
-              Array.from({ length: titles.length - footer.length + (rud ? 1 : 0) }, (_, idx) => (
+              Array.from({ length: titles.length - footer.length + (allowUD ? 1 : 0) }, (_, idx) => (
                 <td key={idx} className={padding}></td>
               ))}
             {footer &&
@@ -160,9 +167,8 @@ export default function Table({ data, rud, footer, isPagination }: TableProps) {
           <button
             onClick={() => setCurrentPage(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`${
-              currentPage === 1 ? "text-[#9b9b9b]" : "text-black"
-            } bg-[#D9D9D9] px-6 py-2 rounded-l-full`}
+            className={`${currentPage === 1 ? "text-[#9b9b9b]" : "text-black"
+              } bg-[#D9D9D9] px-6 py-2 rounded-l-full`}
           >
             {"<<"}
           </button>
@@ -170,9 +176,8 @@ export default function Table({ data, rud, footer, isPagination }: TableProps) {
           <button
             onClick={() => setCurrentPage(currentPage + 1)}
             disabled={currentPage === maxPageData}
-            className={`${
-              currentPage === maxPageData ? "text-[#9b9b9b]" : "text-black"
-            } bg-[#D9D9D9] px-6 py-2 rounded-r-full`}
+            className={`${currentPage === maxPageData ? "text-[#9b9b9b]" : "text-black"
+              } bg-[#D9D9D9] px-6 py-2 rounded-r-full`}
           >
             {">>"}
           </button>

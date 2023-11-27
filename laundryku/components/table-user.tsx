@@ -8,10 +8,11 @@ import Link from "next/link";
 
 export default function TableUser(props: {
   data: any[];
-  rud?: string[];
+  allowUpdate?: boolean;
+  allowDelete?: boolean;
   footer?: string[];
 }) {
-  const { data: InitialData, rud, footer } = props;
+  const { data: InitialData, allowUpdate, allowDelete, footer } = props;
   const titles = Object.keys(InitialData[0]);
   const currencyIndexes = titles
     .map((title, index) => (title.includes("total") ? index : undefined))
@@ -32,6 +33,8 @@ export default function TableUser(props: {
 
   const [data, setData] = useState<any[]>();
   const [originalPrices, setOriginalPrices] = useState<number[]>();
+
+  const allowUD = allowUpdate || allowDelete;
 
   useEffect(() => {
     const prices = InitialData.map((item) => item.total_price / item.quantity);
@@ -78,7 +81,7 @@ export default function TableUser(props: {
                 {idx === 0 ? "product" : item.replaceAll("_", " ")}
               </th>
             ))}
-            {rud && <th className={padding}></th>}
+            {allowUD && <th className={padding}></th>}
           </tr>
         </thead>
         <tbody>
@@ -146,9 +149,9 @@ export default function TableUser(props: {
                   )}
                 </td>
               ))}
-              {rud && (
+              {allowUD && (
                 <td className={``}>
-                  {rud[0] === "d" ? (
+                  {allowDelete && (
                     <div className="flex flex-col justify-center items-center">
                       <X
                         className="cursor-pointer "
@@ -157,8 +160,6 @@ export default function TableUser(props: {
                         }
                       />
                     </div>
-                  ) : (
-                    rud.toString()
                   )}
                 </td>
               )}
@@ -170,12 +171,12 @@ export default function TableUser(props: {
                 <td key={idx}>
                   <div
                     className={`h-1.5 bg-[#7689E7] ${idx === 0 && "ml-8"} ${
-                      idx == titles.length - 1 && !rud && "mr-8"
+                      idx == titles.length - 1 && !allowUD && "mr-8"
                     }`}
                   ></div>
                 </td>
               ))}
-              {rud && (
+              {allowUD && (
                 <td>
                   <div className="h-1.5 bg-[#7689E7] mr-8"></div>
                 </td>

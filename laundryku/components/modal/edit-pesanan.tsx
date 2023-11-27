@@ -41,7 +41,7 @@ const ModalEditPesananProps = ({ isOpen, item, onClose }: ModalEditPesananProps)
             className="text-2xl font-bold text-black flex justify-center"
             id="modal-title"
           >
-            Edit Data Pesanan ({item.id})
+            Edit Data Pesanan
           </h1>
           <div className="mt-4 flex flex-col gap-5">
             <div className={cssForm}>
@@ -55,9 +55,10 @@ const ModalEditPesananProps = ({ isOpen, item, onClose }: ModalEditPesananProps)
                 type="text"
                 name="id_user"
                 id="id_user"
-                className="text-md py-3 px-5 border rounded-2xl border-black placeholder:text-gray-400"
+                className="text-md py-3 px-5 border rounded-2xl border-black placeholder:text-gray-500"
                 placeholder={item.id}
                 onChange={handleInputChange}
+                disabled
               ></input>
             </div>
             <div className={cssForm}>

@@ -1,8 +1,8 @@
 import { toCurrency } from "@/lib/utils";
 import Image from "next/image";
 
-export function CardProduct(props: { data: any[]; crud: string[] }) {
-  const { data, crud } = props;
+export function CardProduct(props: { data: any[]; allowCreate?: boolean }) {
+  const { data, allowCreate } = props;
 
   return (
     <div className="text-xl border drop-shadow-xl bg-[#F8F3F3] rounded-xl">
@@ -16,7 +16,7 @@ export function CardProduct(props: { data: any[]; crud: string[] }) {
 
           <div className="font-normal text-large w-full flex justify-center mt-4">{item.nama}</div>
           <div className="mb-4 font-extrabold w-full flex justify-center mt-2">{toCurrency(item.harga)}</div>
-          {crud[0] === 'a' && (
+          {allowCreate && (
             <div className="bg-[#B8B8B8] w-full text-white font-bold px-4 py-2 flex justify-center cursor-pointer rounded-b-xl">
               Add to Cart
             </div>

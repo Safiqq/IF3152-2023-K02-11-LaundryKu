@@ -71,7 +71,7 @@ export default function Keranjang() {
         <div className="col-span-7 text-black flex flex-col items-center text-2xl m-16">
           <div className=" w-full">
             <p className="font-bold text-[36px] mb-8">Shopping Cart</p>
-            <TableUser data={data} rud={["d"]} />
+            <TableUser data={data} allowDelete={true} />
           </div>
         </div>
         <div className="col-span-5 flex flex-col items-center m-16">
