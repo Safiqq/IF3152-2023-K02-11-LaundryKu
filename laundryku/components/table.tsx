@@ -9,7 +9,6 @@ import ModalAddItem from "./modal/add-item";
 import ModalDeleteItem from "./modal/delete-item";
 
 interface TableProps {
-  id :string;
   data: any[];
   allowUpdate?: boolean;
   allowDelete?: boolean;
