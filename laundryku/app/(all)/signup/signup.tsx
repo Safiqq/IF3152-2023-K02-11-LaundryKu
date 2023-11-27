@@ -11,11 +11,20 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
   });
+  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   const handleSignUp = () => {
     if (payload.nama === "" || payload.email === "" || payload.password === "" || payload.confirmPassword === "") {
       window.alert("Form tidak boleh kosong");
+    } else if (payload.password !== payload.confirmPassword) {
+      setPasswordError("Password and Confirm Password do not match");
+      setEmailError("");
+    } else if (!isValidEmail(payload.email)) {
+      setEmailError("Please enter a valid email address");
     } else {
+      setPasswordError("");
+      setEmailError("");
       fetch(`/api/users/${payload.email}`,{
         method: "POST",
         headers: {
@@ -35,6 +44,11 @@ export default function SignUp() {
       })
     }
   }
+  const isValidEmail = (email) => {
+    // Regular expression for a basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
   return (
     <>
       <div className="mr-28 flex-grow flex justify-end">
@@ -90,8 +104,12 @@ export default function SignUp() {
                 name="email"
                 className="w-4/6 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
                 placeholder="you@example.com"
-                onChange={(e) => setPayload({...payload, email: e.target.value})}
-                 />
+                onChange={(e) => {
+                  setPayload({ ...payload, email: e.target.value });
+                  setEmailError("");
+                }}
+              />
+              {emailError && <p className="text-red-500">{emailError}</p>}
             </div>
 
             <div>
@@ -103,7 +121,10 @@ export default function SignUp() {
                 name="password"
                 className="w-4/6 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
                 placeholder="•••••••••" 
-                onChange={(e) => setPayload({...payload, password: e.target.value})}
+                onChange={(e) => {
+                  setPayload({ ...payload, password: e.target.value });
+                  setPasswordError("");
+                }}
                 />
             </div>
 
@@ -112,12 +133,16 @@ export default function SignUp() {
                 Confirm Password
               </span>
               <input
-                type="confirm-password"
+                type="password"
                 name="confirm-password"
                 className="w-4/6 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
                 placeholder="•••••••••" 
-                onChange={(e) => setPayload({...payload, confirmPassword: e.target.value})}
-                />
+                onChange={(e) => {
+                  setPayload({ ...payload, confirmPassword: e.target.value });
+                  setPasswordError("");
+                }}
+              />
+              {passwordError && <p className="text-red-500">{passwordError}</p>}
             </div>
           </div>
           <button

@@ -15,7 +15,7 @@ export default function Sidebar() {
       {!isWideScreen && isMinimize &&
         <div className='flex justify-end mx-4 items-center h-full cursor-pointer' onClick={() => setIsMinimize(!isMinimize)}>
           <Image
-            className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+            className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70]"
             src="/logo-white/hamburger-menu.svg"
             alt="Menu"
             width={28}
@@ -117,7 +117,7 @@ export default function Sidebar() {
       {isWideScreen &&
         <>
           <Image
-            className="mx-auto p-12 relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+            className="mx-auto p-12 relative dark:drop-shadow-[0_0_0.3rem_#ffffff70]"
             src="/logo.svg"
             alt="LaundryKu Logo"
             width={180}
