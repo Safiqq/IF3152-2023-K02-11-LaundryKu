@@ -24,12 +24,11 @@ export default function SignIn() {
       fetch(`/api/users/${payload.email}`)
         .then((res) => res.json())
         .then((res) => {
-          console.log("res", res);
           if (res.data) {
             if (payload.password === res.data.password) {
+              cookieCutter.set('session-token', JSON.stringify(res.data))
               if (res.data.tipe === "Pegawai") {
                 router.push("/laundry");
-                cookieCutter.set('session-token', JSON.stringify(res.data))
               } else if (res.data.tipe === "Pelanggan") {
                 router.push("/katalog/pakaian");
               }

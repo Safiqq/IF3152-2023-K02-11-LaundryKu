@@ -2,17 +2,6 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-// export async function GET(req: Request, { params }: { params: { idOrKategori: string | number } }) {
-//   try {
-//     const { idOrKategori } = params
-
-// let data;
-
-// if (typeof(idOrKategori) === typeof("string")) {
-//   console.log(idOrKategori, "string")
-// } else {
-//   console.log(idOrKategori, "int")
-// }
 export async function GET(req: Request, { params }: { params: { kategori: string } }) {
   try {
     const { kategori } = params

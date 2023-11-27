@@ -19,7 +19,6 @@ export async function POST(req: Request) {
     let user = await req.json();
     user.tipe = "Pelanggan";
     delete user.confirmPassword
-    console.log("user", user)
     const data = await prisma.user.findFirst({
       where:
         { email: user.email }

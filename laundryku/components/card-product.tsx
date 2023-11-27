@@ -4,6 +4,10 @@ import Image from "next/image";
 export function CardProduct(props: { data: any[]; allowCreate?: boolean }) {
   const { data, allowCreate } = props;
 
+  const handleAddToCart = () => {
+    console.log(data)
+  }
+
   return (
     <div className="text-xl border drop-shadow-xl bg-[#F8F3F3] rounded-xl">
       {data.map((item, key) => (
@@ -17,7 +21,9 @@ export function CardProduct(props: { data: any[]; allowCreate?: boolean }) {
           <div className="font-normal text-large w-full flex justify-center mt-4">{item.nama}</div>
           <div className="mb-4 font-extrabold w-full flex justify-center mt-2">{toCurrency(item.harga)}</div>
           {allowCreate && (
-            <div className="bg-[#B8B8B8] w-full text-white font-bold px-4 py-2 flex justify-center cursor-pointer rounded-b-xl">
+            <div
+              className="bg-[#B8B8B8] w-full text-white font-bold px-4 py-2 flex justify-center cursor-pointer rounded-b-xl"
+              onClick={handleAddToCart}>
               Add to Cart
             </div>
           )}

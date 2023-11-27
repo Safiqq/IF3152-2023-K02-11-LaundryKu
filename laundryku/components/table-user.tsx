@@ -119,9 +119,6 @@ export default function TableUser(props: {
                       </button>
                       <span
                         className="mx-2 rounded-xl bg-[#7689E7] px-4 text-white"
-                        onClick={() =>
-                          console.log(index + (currentPage - 1) * 5)
-                        }
                       >
                         {val as number}
                       </span>
@@ -164,9 +161,6 @@ export default function TableUser(props: {
                     <div className="flex flex-col justify-center items-center">
                       <X
                         className="cursor-pointer "
-                        onClick={() =>
-                          console.log(index + (currentPage - 1) * 5)
-                        }
                       />
                     </div>
                   )}

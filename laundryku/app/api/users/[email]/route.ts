@@ -9,11 +9,8 @@ export async function GET(req: Request, { params }: { params: { email: string } 
       where:
         { email }
     });
-    console.log(data)
-    console.log(1)
     return Response.json({ data });
   } catch (error) {
-    console.log(error)
     return Response.json({ error });
   } finally {
     await prisma.$disconnect();
