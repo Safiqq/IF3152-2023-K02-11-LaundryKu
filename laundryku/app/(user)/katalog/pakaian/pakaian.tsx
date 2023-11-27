@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { CardProduct } from "@/components/card-product";
 import { Header } from "@/components/header";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 
-export default function Pakaian() {
+export default function Pakaian(id : any) {
+  console.log("id", id)
   const [dataProduk, setDataProduk] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -19,10 +19,10 @@ export default function Pakaian() {
           const data = (await response.json()).data;
           setDataProduk(data);
         } else {
-          console.error("Failed to fetch data");
+          window.alert("Failed to fetch data");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        window.alert("Error fetching data:" + error);
       } finally {
         setLoading(false)
       }
@@ -31,8 +31,6 @@ export default function Pakaian() {
     fetchData();
   }, []);
 
-  const cardContainerClass =
-    dataProduk.length <= 4 ? "flex justify-center" : " grid grid-cols-5";
 
   return (
     <>
@@ -40,7 +38,7 @@ export default function Pakaian() {
       <div className="h-[20vh]"></div>
       <h1 className="text-black grid grid-cols-5 gap-20 m-16">
         {dataProduk.length > 0 && dataProduk.map((dataItem, index) => (
-          <CardProduct key={index} data={[dataItem]} allowCreate={true} />
+          <CardProduct key={index} item={dataItem} allowCreate={true} user_id={id}/>
         ))}
       </h1>
       {loading && (

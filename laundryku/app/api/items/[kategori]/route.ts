@@ -15,7 +15,6 @@ export async function GET(req: Request, { params }: { params: { kategori: string
     }
     return Response.json({ data });
   } catch (error) {
-    console.log('error', error)
     return Response.json({ error });
   } finally {
     await prisma.$disconnect();

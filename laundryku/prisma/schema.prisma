@@ -34,7 +34,7 @@ model Item {
 }
 
 model Keranjang {
-  id           Int    @id @default(autoincrement())
+  id           Int    @id
   totalNominal Int
   items        Item[] @relation("ItemToKeranjang")
 }

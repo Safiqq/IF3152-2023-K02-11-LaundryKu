@@ -54,7 +54,7 @@ const data = [
     },
   ];
 
-export default function Transaksi() {
+export default function Transaksi(id : any) {
     return (
         <main className="flex flex-col min-w-screen min-h-screen bg-white">
           <Header />

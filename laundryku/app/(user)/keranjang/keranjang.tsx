@@ -44,7 +44,7 @@ const data = [
   },
 ];
 
-export default function Keranjang() {
+export default function Keranjang(id : any) {
   const handleFileUpload = (files: FileList | null) => {
     if (!files) return;
 

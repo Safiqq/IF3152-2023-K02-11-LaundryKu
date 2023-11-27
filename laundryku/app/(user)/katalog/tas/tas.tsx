@@ -5,7 +5,7 @@ import { Header } from "@/components/header";
 import { CardProduct } from "@/components/card-product";
 import Image from "next/image";
 
-export default function Tas() {
+export default function Tas(id : any) {
     const [dataProduk, setDataProduk] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -18,10 +18,10 @@ export default function Tas() {
                     const data = (await response.json()).data;
                     setDataProduk(data);
                 } else {
-                    console.error("Failed to fetch data");
+                    window.alert("Failed to fetch data");
                 }
             } catch (error) {
-                console.error("Error fetching data:", error);
+                window.alert("Error fetching data:" + error);
             } finally {
                 setLoading(false);
             }
@@ -38,7 +38,7 @@ export default function Tas() {
             <div className="h-[20vh]"></div>
             <h1 className={`text-black gap-20 m-16 ${cardContainerClass}`}>
                 {dataProduk.length > 0 && dataProduk.map((dataItem, index) => (
-                    <CardProduct key={index} data={[dataItem]} allowCreate={true} />
+                    <CardProduct key={index} item={dataItem} allowCreate={true} />
                 ))}
             </h1>
             {loading && (

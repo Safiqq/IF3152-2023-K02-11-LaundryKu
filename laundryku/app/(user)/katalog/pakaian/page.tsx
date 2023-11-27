@@ -15,7 +15,7 @@ export default function Page() {
   if (cookieStore.has('session-token')) {
     const parsedSessionToken = JSON.parse(cookieStore.get('session-token')?.value ?? '');
     if (parsedSessionToken.tipe === "Pelanggan") {
-      return <Pakaian />;
+      return <Pakaian id={parsedSessionToken.id}/>;
     }
   }
   return redirect("/signin");
