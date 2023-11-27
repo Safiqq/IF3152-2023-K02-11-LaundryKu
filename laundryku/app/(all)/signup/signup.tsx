@@ -26,8 +26,6 @@ export default function SignUp() {
     } else {
       setPasswordError("");
       setEmailError("");
-      console.log(3)
-      console.log("payload", payload)
       fetch('/api/users/', {
         method: "POST",
         headers: {
@@ -35,11 +33,14 @@ export default function SignUp() {
         },
         body: JSON.stringify(payload),
       })
-      .then(res => {
-        if (res.status === 200) {
-
-        }
-      })
+        .then(res => res.json())
+        .then((res) => {
+          if (res.message === "success") {
+            router.push("/katalog/pakaian");
+          } else {
+            window.alert(res.error)
+          }
+        })
     }
   }
 

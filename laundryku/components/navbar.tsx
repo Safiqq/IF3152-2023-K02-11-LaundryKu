@@ -5,7 +5,7 @@ export default async function Navbar() {
   return (
     <header>
       <div className="flex items-center justify-center">
-        <Searchbar isShow={true} />
+        <Searchbar isShow={true}  />
         <UserButton />
       </div>
     </header>

@@ -13,7 +13,7 @@ export function Header() {
 
   const pathname = usePathname();
   return (
-    <div className="bg-[#7689E7] fixed top-0 z-50 w-full  h-[20vh] flex justify-center shadow-xl">
+    <div className="bg-[#7689E7] fixed top-0 z-50 w-full  h-[20vh] flex justify-center shadow-xl text-white">
       <div className="flex justify-center items-center pl-28 pr-6">
         <Image
           src="/logo.svg"
