@@ -18,7 +18,7 @@ interface Item {
 const data: Item[] = [
   {
     id: 1,
-    gambar: "/logo.svg",
+    gambar: "/product/image1.png",
     nama: "Kaos",
     harga: 10000,
     kategori: "Pakaian",
@@ -26,7 +26,7 @@ const data: Item[] = [
   },
   {
     id: 2,
-    gambar: "/logo.svg",
+    gambar: "/product/celana-panjang.png",
     nama: "Celana Panjang",
     harga: 10000,
     kategori: "Pakaian",
@@ -34,7 +34,7 @@ const data: Item[] = [
   },
   {
     id: 3,
-    gambar: "/logo.svg",
+    gambar: "/product/kemeja.png",
     nama: "Kemeja",
     harga: 10000,
     kategori: "Pakaian",
@@ -42,7 +42,7 @@ const data: Item[] = [
   },
   {
     id: 4,
-    gambar: "/logo.svg",
+    gambar: "/product/sprei.png",
     nama: "Sprei",
     harga: 10000,
     kategori: "Pakaian",
@@ -50,7 +50,7 @@ const data: Item[] = [
   },
   {
     id: 5,
-    gambar: "/logo.svg",
+    gambar: "/product/selimut.png",
     nama: "Selimut",
     harga: 10000,
     kategori: "Pakaian",
@@ -58,7 +58,7 @@ const data: Item[] = [
   },
   {
     id: 6,
-    gambar: "/logo.svg",
+    gambar: "/product/handuk.png",
     nama: "Handuk",
     harga: 10000,
     kategori: "Pakaian",
@@ -66,7 +66,7 @@ const data: Item[] = [
   },
   {
     id: 7,
-    gambar: "/logo.svg",
+    gambar:"/product/matras.png",
     nama: "Matras",
     harga: 10000,
     kategori: "Pakaian",
@@ -74,7 +74,7 @@ const data: Item[] = [
   },
   {
     id: 8,
-    gambar: "/logo.svg",
+    gambar: "/product/sarung-bantal.png",
     nama: "Sarung Bantal",
     harga: 10000,
     kategori: "Pakaian",
@@ -82,7 +82,7 @@ const data: Item[] = [
   },
   {
     id: 9,
-    gambar: "/logo.svg",
+    gambar: "/product/sepatu-tinggi.png",
     nama: "Sepatu Tinggi",
     harga: 10000,
     kategori: "Pakaian",
@@ -90,7 +90,7 @@ const data: Item[] = [
   },
   {
     id: 10,
-    gambar: "/logo.svg",
+    gambar: "/product/tas-besar.png",
     nama: "Tas Besar",
     harga: 10000,
     kategori: "Pakaian",
@@ -114,7 +114,7 @@ export default function Laundry(props:{isWideScreen: boolean}) {
           <div className="flex justify-between">
             <h1>Data Laundry</h1>
             <div
-              className="flex items-center justify-center rounded-full px-6 py-2 gap-2 bg-[#7689E7] cursor-pointer"
+              className="flex items-center justify-center rounded-full px-6 py-1 gap-2 bg-[#7689E7] cursor-pointer"
               // onClick={() => ModalAddItem(onClose={() => console.log(1)})}
               onClick={() => setIsAddItem(!isAddItem)}
             >
