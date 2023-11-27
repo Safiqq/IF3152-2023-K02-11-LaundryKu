@@ -88,10 +88,21 @@ for (let i = 0; i < data.length; i++) {
 export default function Laporan() {
   const { data: session } = useSession()
   const router = useRouter();
-  if (!session?.user) {
-    router.push("/signin")
-    return null;
-  }
+  
+
+  // if (session?.user?.email) {
+  //   fetch(`/api/user/${session.user.email}`)
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res.data) {
+  //         if (res.data.tipe === "Pelanggan") {
+  //           router.push("/laundry");
+  //         }
+  //       } else {
+  //         router.push("/signin")
+  //       }
+  //     });
+  // }
 
   const [jenisLaporan, setJenisLaporan] = useState("harian");
   const [value, setValue] = useState({
