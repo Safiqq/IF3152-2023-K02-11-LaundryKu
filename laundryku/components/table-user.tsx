@@ -40,14 +40,26 @@ export default function TableUser(props: {
 
   const handleQuantityChange = (index: number, newQuantity: number) => {
     if (!originalPrices) return;
-
+  
     const originalPrice = originalPrices[index];
     const newData = [...InitialData];
-    newData[index].quantity = newQuantity;
-    newData[index].total_price = newQuantity * originalPrice;
-
-    console.log("originalPrice", originalPrice);
-
+  
+    if (newQuantity === 0) {
+      // Remove the item from the data array
+      newData.splice(index, 1);
+    } else {
+      // Update quantity and total price
+      newData[index].quantity = newQuantity;
+      newData[index].total_price = newQuantity * originalPrice;
+    }
+  
+    setTotalPrice(
+      newData.reduce(
+        (accumulator, currentItem) => accumulator + currentItem.total_price,
+        0
+      )
+    );
+  
     setData(newData);
   };
 
@@ -98,7 +110,7 @@ export default function TableUser(props: {
                         onClick={() =>
                           handleQuantityChange(
                             index + (currentPage - 1) * 5,
-                            (val as number) - 1
+                            Math.max(0, (val as number) - 1) 
                           )
                         }
                         className="px-2 text-2xl"
