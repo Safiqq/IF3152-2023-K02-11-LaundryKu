@@ -134,10 +134,10 @@ export default function SignIn() {
       {loading && (
         <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50">
           <Image
-            src="/spinner.gif"
+            src="/spinner-fixgol.gif"
             alt="spinner"
-            width={200}
-            height={200}
+            width={700}
+            height={700}
           />
         </div>
       )}
