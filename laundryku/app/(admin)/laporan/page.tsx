@@ -223,7 +223,6 @@ export default function Laporan() {
       </div>
 
       <Table
-        id="laporan-table"
         data={data}
         footer={[
           "Total Pemasukan",

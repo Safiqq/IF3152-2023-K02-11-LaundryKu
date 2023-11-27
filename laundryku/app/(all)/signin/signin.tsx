@@ -34,10 +34,14 @@ export default function SignIn() {
                 router.push("/katalog/pakaian");
               }
             } else {
+              setLoading(false);
               window.alert("Email atau password salah");
+              
             }
           } else {
+            setLoading(false);
             window.alert("Email atau password salah");
+            
           }
         });
     }
