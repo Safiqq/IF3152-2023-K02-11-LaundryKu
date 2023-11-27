@@ -136,7 +136,7 @@ export const config = {
   callbacks: {
     authorized({ request, auth }) {
       // const { pathname } = request.nextUrl
-      // if (pathname === "/middleware-example") return !!auth
+      // if (pathname === "/middleware") return !!auth
       return true
     },
   },
