@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Authentication {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  nama     String
+  email    String   @unique
+  password String
+  tipe     UserType
+}
+
+model Item {
+  id         Int         @id @default(autoincrement())
+  nama       String
+  harga      Int
+  gambar     String
+  kategori   String
+}
+
+model Keranjang {
+  idUser       Int  @id
+  totalNominal Int
+  items        Json
+}
+
+model Pesanan {
+  id               Int              @id @default(autoincrement())
+  idUser           Int
+  waktuPemesanan   DateTime         @default(now())
+  nominalPemesanan Int
+  statusPesanan    StatusPesanan
+  buktiPembayaran  String
+  statusPembayaran StatusPembayaran
+  items            Json
+}
+
+enum UserType {
+  Pegawai
+  Pelanggan
+}
+
+enum StatusPesanan {
+  DalamProses
+  SiapDiambil
+  Selesai
+}
+
+enum StatusPembayaran {
+  BelumDibayar
+  SudahDibayar
+}
