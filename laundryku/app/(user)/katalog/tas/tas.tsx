@@ -5,7 +5,8 @@ import { Header } from "@/components/header";
 import { CardProduct } from "@/components/card-product";
 import Image from "next/image";
 
-export default function Tas(id : any) {
+export default function Tas(props: { id: number }) {
+    const {id} = props
     const [dataProduk, setDataProduk] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -13,7 +14,7 @@ export default function Tas(id : any) {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const response = await fetch("/api/items/tas");
+                const response = await fetch("/api/items/Tas");
                 if (response.ok) {
                     const data = (await response.json()).data;
                     setDataProduk(data);
@@ -38,7 +39,7 @@ export default function Tas(id : any) {
             <div className="h-[20vh]"></div>
             <h1 className={`text-black gap-20 m-16 ${cardContainerClass}`}>
                 {dataProduk.length > 0 && dataProduk.map((dataItem, index) => (
-                    <CardProduct key={index} item={dataItem} allowCreate={true} />
+                    <CardProduct key={index} item={dataItem} allowCreate={true} idUser={id} />
                 ))}
             </h1>
             {loading && (

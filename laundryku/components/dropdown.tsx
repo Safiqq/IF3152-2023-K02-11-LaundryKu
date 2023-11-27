@@ -11,9 +11,9 @@ export interface DropdownElement {
   onClick: () => void;
 }
 
-export function Dropdown(props: { elements: DropdownElement[], type: number }) {
-  const { elements, type } = props;
-  const [text, setText] = useState(elements[0].text);
+export function Dropdown(props: { elements: DropdownElement[], type: number, index?: number }) {
+  const { elements, type, index = 0 } = props;
+  const [text, setText] = useState(elements[index].text);
 
   return (
     <Menu as="div" className="relative inline-block text-left">

@@ -7,18 +7,20 @@ interface ModalEditPesananProps {
 }
 
 const ModalEditPesananProps = ({ isOpen, item, onClose }: ModalEditPesananProps) => {
-  if (!isOpen) {
-    return null;
-  }
-
-  const cssForm = "flex flex-col gap-2";
   const [payload, setPayload] = useState({
+    id: item.id,
     id_user: item.id_user,
     items: item.items,
     waktu_pemesanan: item.waktu_pemesanan,
     nominal_pesanan: item.nominal_pesanan,
     status_pesanan: item.status_pesanan,
   });
+  
+  if (!isOpen) {
+    return null;
+  }
+
+  const cssForm = "flex flex-col gap-2";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,7 +29,24 @@ const ModalEditPesananProps = ({ isOpen, item, onClose }: ModalEditPesananProps)
   };
 
   const handleSave = () => {
-    console.log("Payload:", payload);
+    console.log(payload.items)
+    fetch(`/api/pesanans/${payload.id}}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload)
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.error) {
+          console.log(res)
+          window.alert(JSON.stringify(res.error));
+        } else {
+          window.alert("Berhasil mengubah pesanan");
+          onClose();
+        }
+      });
   };
 
   return (
@@ -55,8 +74,8 @@ const ModalEditPesananProps = ({ isOpen, item, onClose }: ModalEditPesananProps)
                 type="text"
                 name="id_user"
                 id="id_user"
-                className="text-md py-3 px-5 border rounded-2xl border-black placeholder:text-gray-500"
-                placeholder={item.id}
+                className="text-md text-gray-600 bg-gray-300 py-3 px-5 border rounded-2xl border-black placeholder:text-gray-500"
+                value={item.id}
                 onChange={handleInputChange}
                 disabled
               ></input>
@@ -72,8 +91,8 @@ const ModalEditPesananProps = ({ isOpen, item, onClose }: ModalEditPesananProps)
                 type="text"
                 name="items"
                 id="items"
-                className="text-md py-3 px-5 border rounded-2xl border-black placeholder:text-gray-400"
-                placeholder={item.items}
+                className="text-md text-gray-600 bg-gray-300 py-3 px-5 border rounded-2xl border-black placeholder:text-gray-400"
+                value={item.items}
                 onChange={handleInputChange}
               ></input>
             </div>
@@ -88,9 +107,10 @@ const ModalEditPesananProps = ({ isOpen, item, onClose }: ModalEditPesananProps)
                 type="text"
                 name="waktu_pemesanan"
                 id="waktu_pemesanan"
-                className="text-md py-3 px-5 border rounded-2xl border-black placeholder:text-gray-400"
-                placeholder={item.waktu_pemesanan}
+                className="text-md text-gray-600 bg-gray-300 py-3 px-5 border rounded-2xl border-black placeholder:text-gray-400"
+                value={item.waktu_pemesanan}
                 onChange={handleInputChange}
+                disabled
               ></input>
             </div>
             <div className={cssForm}>
@@ -105,7 +125,7 @@ const ModalEditPesananProps = ({ isOpen, item, onClose }: ModalEditPesananProps)
                 name="nominal_pesanan"
                 id="nominal_pesanan"
                 className="text-md py-3 px-5 border rounded-2xl border-black placeholder:text-gray-400"
-                placeholder={item.nominal_pesanan}
+                value={item.nominal_pesanan}
                 onChange={handleInputChange}
               ></input>
             </div>
@@ -121,7 +141,7 @@ const ModalEditPesananProps = ({ isOpen, item, onClose }: ModalEditPesananProps)
                 name="waktu_pemesanan"
                 id="waktu_pemesanan"
                 className="text-md py-3 px-5 border rounded-2xl border-black placeholder:text-gray-400"
-                placeholder={item.status_pesanan}
+                value={item.status_pesanan}
                 onChange={handleInputChange}
               ></input>
             </div>

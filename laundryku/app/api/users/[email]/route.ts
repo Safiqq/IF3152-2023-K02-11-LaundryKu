@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from "@/app/api/_base";
 
 export async function GET(req: Request, { params }: { params: { email: string } }) {
   try {
@@ -11,13 +9,12 @@ export async function GET(req: Request, { params }: { params: { email: string } 
     });
     return Response.json({ data });
   } catch (error) {
+    console.log(error)
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
-export async function UPDATE(req: Request, { params }: { params: { email: string } }) {
+export async function PUT(req: Request, { params }: { params: { email: string } }) {
   try {
     const { email } = params
     const payload = await req.json();
@@ -29,12 +26,10 @@ export async function UPDATE(req: Request, { params }: { params: { email: string
     return Response.json({ data });
   } catch (error) {
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
-export async function DELETE({ params }: { params: { email: string } }) {
+export async function DELETE(req: Request, { params }: { params: { email: string } }) {
   try {
     const { email } = params
     const data = await prisma.user.delete({
@@ -44,7 +39,5 @@ export async function DELETE({ params }: { params: { email: string } }) {
     return Response.json({ data });
   } catch (error) {
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }

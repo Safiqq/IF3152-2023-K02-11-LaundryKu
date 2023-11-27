@@ -9,14 +9,17 @@ import cookieCutter from 'cookie-cutter'
 export default function SignIn() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [payload, setPayload] = useState({
-    email: "",
-    password: "",
-  });
 
-  const handleSignIn = (e: React.MouseEvent<HTMLElement>) => {
+  const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
+    const form = e.target as HTMLFormElement;
+    const payload = {
+      email: (form.email as HTMLInputElement).value,
+      password: (form.password as HTMLInputElement).value
+    };
+
     if (payload.email === "" && payload.password === "") {
       window.alert("Form tidak boleh kosong");
       setLoading(false);
@@ -35,12 +38,11 @@ export default function SignIn() {
             } else {
               setLoading(false);
               window.alert("Email atau password salah");
-              
+
             }
           } else {
             setLoading(false);
             window.alert("Email atau password salah");
-            
           }
         });
     }
@@ -62,7 +64,7 @@ export default function SignIn() {
         <div className="text-right">
           <div className="mt-8 mr-8 text-gray-600 text-[13px]">
             <h3 className="text-[14px] font-semibold">
-              Don't have any account?
+              Don&apos;t have any account?
               <button
                 type="button"
                 className="ml-3 font-bold inline-block rounded-full border-2 border-[##999696] px-8 py-3 text-sm uppercase leading-normal text-[#7689E7] transition duration-150 ease-in-out hover:border-[#7689E7] hover:bg-neutral-500 hover:bg-opacity-10 hover:text-[#7689E7] focus:border-[#7689E7] focus:text-[#7689E7] focus:outline-none focus:ring-0 active:border-[#7689E7] active:text-[#7689E7] dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
@@ -81,7 +83,7 @@ export default function SignIn() {
               Sign in to your account
             </p>
           </div>
-          <div className=" flex flex-col gap-4 mt-6 mb-10">
+          <form className=" flex flex-col gap-4 mt-6" onSubmit={handleSignIn}>
             <div>
               <span className="text-[20px] my-1 after:content-['*'] after:ml-0.5 after:text-red-500 block text-xl font-bold text-slate-800">
                 Email
@@ -91,9 +93,6 @@ export default function SignIn() {
                 name="email"
                 className="w-4/6 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
                 placeholder="you@example.com"
-                onChange={(e) =>
-                  setPayload({ ...payload, email: e.target.value })
-                }
               />
             </div>
 
@@ -106,18 +105,15 @@ export default function SignIn() {
                 name="password"
                 className="w-4/6 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
                 placeholder="•••••••••"
-                onChange={(e) =>
-                  setPayload({ ...payload, password: e.target.value })
-                }
               />
             </div>
-          </div>
-          <button
-            className="w-4/6 text-[20px] font-semibold text-white bg-[#7689E7] hover:bg-[#6272C1] focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full text-md px-5 py-3 text-center dark:bg-[#7689E7] dark:hover:bg-[#6272C1] dark:focus:ring-white"
-            onClick={handleSignIn}
-          >
-            Sign In
-          </button>
+            <button
+              className="mt-4 w-4/6 text-[20px] font-semibold text-white bg-[#7689E7] hover:bg-[#6272C1] focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-full text-md px-5 py-3 text-center dark:bg-[#7689E7] dark:hover:bg-[#6272C1] dark:focus:ring-white"
+              type="submit"
+            >
+              Sign In
+            </button>
+          </form>
           <div className="flex items-center gap-4 w-4/6 my-6">
             <div className="w-1/2 h-[1px] bg-[#595959]"></div>
             <p>or</p>

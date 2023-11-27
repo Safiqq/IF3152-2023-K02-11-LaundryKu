@@ -1,51 +1,33 @@
 "use client"
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Header } from "@/components/header";
 import Image from "next/image";
 import TableUser from "@/components/table-user";
 
-const data = [
-  {
-    image: "/product/image1.png",
-    product: "Pakaian - Kaos",
-    quantity: 1,
-    total_price: 5000,
-  },
-  {
-    image: "/product/image1.png",
-    product: "Pakaian - Celana Panjang",
-    quantity: 2,
-    total_price: 6000,
-  },
-  {
-    image: "/product/image1.png",
-    product: "Pakaian - Sepatu Tinggi",
-    quantity: 1,
-    total_price: 5000,
-  },
-  {
-    image: "/product/image1.png",
-    product: "Pakaian - Sepatu Tinggi",
-    quantity: 1,
-    total_price: 30000,
-  },
-  {
-    image: "/product/image1.png",
-    product: "Pakaian - Sepatu Tinggi",
-    quantity: 1,
-    total_price: 30000,
-  },
-  {
-    image: "/product/image1.png",
-    product: "Pakaian - Sepatu Tinggi",
-    quantity: 1,
-    total_price: 30000,
-  },
-];
+interface DataProduk {
+  id: number;
+  nama: string;
+  harga: number;
+  gambar: string;
+  kategori: string;
+  status: string;
+}
 
 export default function Keranjang(props: { id: number }) {
   const { id } = props;
+  const [dataKeranjang, setDataKeranjang] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [payload, setPayload] = useState({
+    id_user: id,
+    total_nominal: 0,
+    status_pesanan: "DalamProses",
+    bukti_pembayaran: "",
+    status_pembayaran: "BelumDibayar",
+    items: {},
+  });
+  const [fileName, setFileName] = useState("");
+
   const handleFileUpload = (files: FileList | null) => {
     if (!files) return;
 
@@ -53,15 +35,76 @@ export default function Keranjang(props: { id: number }) {
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      // The result property contains the data as a data URL
       const imageData = e.target?.result;
-      console.log('Image Data:', imageData);
+      setPayload({ ...payload, bukti_pembayaran: imageData as string });
+    };
+    reader.readAsDataURL(file);
+    setFileName(file.name);
+  };
 
-      // You can use the imageData in your application, for example, display it in an <img> tag.
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const resKeranjang = await fetch(`/api/keranjangs/${id}`);
+        const resProduk = await fetch("/api/items");
+
+        if (resKeranjang.ok && resProduk.ok) {
+          let _dataKeranjang = (await resKeranjang.json()).data;
+          const _dataProduk: DataProduk[] = (await resProduk.json()).data;
+          const items = _dataKeranjang.items;
+          const keys = Object.keys(items);
+          const values: number[] = Object.values(items);
+          _dataKeranjang = [];
+          let total_harga = 0;
+          keys.forEach((produkId, idx) => {
+            const produk = _dataProduk.find(produk => produk.id === parseInt(produkId));
+            _dataKeranjang.push({
+              image: produk?.gambar,
+              product: `${produk?.kategori} - ${produk?.nama}`,
+              quantity: values[idx],
+              total_price: produk?.harga ? produk?.harga * values[idx] : 0,
+            });
+            total_harga += produk?.harga ? produk?.harga * values[idx] : 0;
+          })
+          setDataKeranjang(_dataKeranjang);
+          setPayload({...payload, items, total_nominal: total_harga})
+        } else {
+          window.alert("Failed to fetch data");
+        }
+        setLoading(false)
+      } catch (error) {
+        window.alert("Keranjang pengguna masih kosong");
+        setLoading(false);
+      }
     };
 
-    // Read the file as a data URL
-    reader.readAsDataURL(file);
+    fetchData();
+  }, []);
+
+  const handleSave = () => {
+    if (payload.bukti_pembayaran === "") {
+      window.alert("Form tidak boleh kosong");
+      return;
+    }
+
+    fetch("/api/pesanans", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload)
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message === "success") {
+          window.alert("Berhasil checkout");
+          window.location.reload();
+        } else {
+          console.log(res)
+          window.alert(JSON.stringify(res.error));
+        }
+      });
   };
 
   return (
@@ -72,7 +115,7 @@ export default function Keranjang(props: { id: number }) {
         <div className="col-span-7 text-black flex flex-col items-center text-2xl m-16">
           <div className=" w-full">
             <p className="font-bold text-[36px] mb-8">Shopping Cart</p>
-            <TableUser data={data} allowDelete={true} />
+            {dataKeranjang && <TableUser data={dataKeranjang} allowDelete={true} />}
           </div>
         </div>
         <div className="col-span-5 flex flex-col items-center m-16">
@@ -93,7 +136,7 @@ export default function Keranjang(props: { id: number }) {
                   onChange={(e) => handleFileUpload(e.target.files)}
                 />
                 <Image
-                  src="/upload.svg"
+                  src="/logo-gray/upload.svg"
                   width={100}
                   height={100}
                   alt="Upload"
@@ -101,19 +144,42 @@ export default function Keranjang(props: { id: number }) {
                 <p className="font-semibold text-base mt-2">.PDF .JPG .PNG .DOC</p>
                 <p className="font-semibold text-base">Drag and Drop your files here</p>
               </label>
+              {fileName !== "" &&
+                <div className="flex gap-3">
+                  <Image
+                    src="/logo-black/file.svg"
+                    width={16}
+                    height={16}
+                    alt="Image"
+                  />
+                  <p>{fileName}</p>
+                </div>
+              }
               <div className="flex flex-row justify-between w-10/12 mt-6">
                 <div className="text-[#706464] py-2 px-16 text-lg font-bold border-2 border-[#706464] rounded-full cursor-pointer hover:bg-[#dedcdc]">
                   Cancel
                 </div>
-                <div className="text-white py-2 px-16 bg-[#7689E7] hover:bg-[#5365c1] text-lg font-bold rounded-full cursor-pointer">
+                <div
+                  className="text-white py-2 px-16 bg-[#7689E7] hover:bg-[#5365c1] text-lg font-bold rounded-full cursor-pointer"
+                  onClick={handleSave}
+                >
                   Submit
                 </div>
               </div>
-
             </div>
           </div>
         </div>
       </div>
+      {loading && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50">
+          <Image
+            src="/spinner-fixgol.gif"
+            alt="spinner"
+            width={700}
+            height={700}
+          />
+        </div>
+      )}
     </main>
   );
 }

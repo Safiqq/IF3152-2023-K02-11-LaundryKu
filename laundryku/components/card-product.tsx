@@ -6,42 +6,43 @@ export function CardProduct(props: { item: any; allowCreate?: boolean, idUser?: 
   
   const handleAddToCart = async () => {
     // Cek apakah sdh ada keranjang
-    fetch(`/api/keranjangs/${idUser.id}`)
-      .then(res => res.json())
-      .then(res => {
-        console.log('res', res)
-        if (res.error) {
-          // If there is no shopping cart, create a new one
-          fetch("/api/keranjangs/", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              idUser: idUser.id,
-              totalNominal: item.harga,
-              items: [item.id]
-            }),
-          })
-            .then(res => res.json())
-            .then(res => console.log('new cart', res));
-        } else {
-          console.log('existing cart', res.data);
-
-          // If there is an existing shopping cart, update it
-          fetch(`/api/keranjangs/${idUser.id}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              items: [...res.data.items, item.id],
-            }),
-          })
-            .then(res => res.json())
-            .then(res => console.log('updated cart', res));
-        }
+    console.log("idUserdicard", idUser)
+    const response = await fetch(`/api/keranjangs/${idUser}`);
+    const data = (await response.json()).data
+    if (data) {
+      console.log("datadicard", data)
+      console.log(JSON.stringify({
+        id_user: data.id_user,
+        items: {...data.items, [item.id]: (data.items[item.id] ? (data.items[item.id] + 1) : 1 )},
+        total_nominal: data.total_nominal + item.harga,
+      }))
+      const a = await fetch(`/api/keranjangs/${idUser}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id_user: data.id_user,
+          items: {...data.items, [item.id]: (data.items[item.id] ? (data.items[item.id] + 1) : 1 )},
+          total_nominal: data.total_nominal + item.harga,
+        }),
       });
+      console.log("a", await a.json())
+    } else {
+      await fetch("/api/keranjangs/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id_user: idUser,
+          total_nominal: item.harga,
+          items: {[item.id]: 1}
+        }),
+      })
+      console.log("heree post")
+    }
+    window.alert("Berhasil menambahkan ke keranjang");
   }
 
   return (

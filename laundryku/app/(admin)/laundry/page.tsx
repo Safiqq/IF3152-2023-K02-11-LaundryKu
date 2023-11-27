@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'Sign Up',
+  title: 'Data Laundry',
   icons:  {
     icon: "/logo.svg"
   }

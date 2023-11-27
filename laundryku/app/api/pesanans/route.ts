@@ -1,15 +1,16 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from "@/app/api/_base";
 
 export async function GET() {
   try {
-    const data = await prisma.pesanan.findMany();
+    const data = await prisma.pesanan.findMany({
+      orderBy: {
+        id: 'asc'
+      }
+    });
     return Response.json({ data });
   } catch (error) {
+    console.log(error)
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 

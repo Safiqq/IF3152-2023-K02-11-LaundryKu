@@ -7,6 +7,7 @@ import Image from "next/image";
 
 export default function Pakaian(props: { id: number }) {
   const { id } = props;
+  console.log("iduserdikatalog", id)
   const [dataProduk, setDataProduk] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -14,7 +15,7 @@ export default function Pakaian(props: { id: number }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/items/pakaian");
+        const response = await fetch("/api/items/Pakaian");
         if (response.ok) {
           const data = (await response.json()).data;
           setDataProduk(data);

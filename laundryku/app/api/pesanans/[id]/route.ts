@@ -1,50 +1,43 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from "@/app/api/_base";
 
-const prisma = new PrismaClient()
-
-export async function GET(req: Request, { params }: { params: { id: number } }) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     const { id } = params
     const data = await prisma.pesanan.findFirst({
       where:
-        { id }
+        { id: parseInt(id) },
     });
     return Response.json({ data });
   } catch (error) {
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
-export async function UPDATE(req: Request, { params }: { params: { id: number } }) {
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
   try {
     const { id } = params
     const payload = await req.json();
     const data = await prisma.pesanan.update({
       where:
-        { id },
+        { id: parseInt(id) },
       data: payload,
     });
     return Response.json({ data });
   } catch (error) {
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
-export async function DELETE({ params }: { params: { id: number } }) {
+export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   try {
     const { id } = params
+
     const data = await prisma.pesanan.delete({
       where:
-        { id },
+        { id: parseInt(id) },
     });
     return Response.json({ data });
   } catch (error) {
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }

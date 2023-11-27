@@ -12,12 +12,14 @@ export default function TableTransactions(props: {
   footer?: string[];
 }) {
   const { data: InitialData, allowDelete, footer } = props;
-  const titles = Object.keys(InitialData[0]);
-  const currencyIndexes = titles
-    .map((title, index) => (title.includes("total") ? index : undefined))
-    .filter((index) => index !== undefined);
+  let titles, currencyIndexes: any;
+  if (InitialData && InitialData.length > 0) {
+    titles = Object.keys(InitialData[0]);
+    currencyIndexes = titles
+      .map((title, index) => (title.includes("total") ? index : undefined))
+      .filter((index) => index !== undefined);
+  }
 
-  const dataAwal = InitialData;
   const padding = "px-2 py-4";
   const totalData = InitialData.length;
   const itemsPerPage = 5;
@@ -35,7 +37,7 @@ export default function TableTransactions(props: {
       <table className="min-w-full text-center mt-4 bg-white text-black ">
         <thead className="text-xl capitalize bg-white border-b-2 border-[#6C6C6C]">
           <tr>
-            {titles.map((item, idx) => (
+            {titles?.map((item, idx) => (
               <th
                 key={idx}
                 className={`px-4 py-2 text-[#8C8F96] font-semibold`}
@@ -56,14 +58,13 @@ export default function TableTransactions(props: {
                   key={idx}
                   className={`${padding}`}
                 >
-                  {idx === titles.length - 1 || idx === titles.length -2 ? ( // Assuming status is the last column
+                  {idx === titles.length - 1 || idx === titles.length - 2 ? ( // Assuming status is the last column
                     <button
-                      className={`px-6 py-3 rounded capitalize ${
-                        val === 'berhasil' ? 'bg-[#F9BA42] rounded-full font-semibold' :
-                        val === 'diambil' ? 'bg-[#227B3D] rounded-full font-semibold text-white' :
-                        val === 'diproses' ? 'bg-[#D9D9D9] rounded-full font-semibold' :
-                        'bg-gray-500'
-                      }`}
+                      className={`px-6 py-3 rounded capitalize ${val === 'berhasil' ? 'bg-[#F9BA42] rounded-full font-semibold' :
+                          val === 'diambil' ? 'bg-[#227B3D] rounded-full font-semibold text-white' :
+                            val === 'diproses' ? 'bg-[#D9D9D9] rounded-full font-semibold' :
+                              'bg-gray-500'
+                        }`}
                     >
                       {val as string}
                     </button>
@@ -80,17 +81,16 @@ export default function TableTransactions(props: {
                   )}
                 </td>
               ))}
-              
+
             </tr>
           ))}
           {footer && (
             <tr>
-              {titles.map((_, idx) => (
+              {titles?.map((_, idx) => (
                 <td key={idx}>
                   <div
-                    className={`h-1.5 bg-[#7689E7] ${idx === 0 && "ml-8"} ${
-                      idx == titles.length - 1 && !allowDelete && "mr-8"
-                    }`}
+                    className={`h-1.5 bg-[#7689E7] ${idx === 0 && "ml-8"} ${idx == titles.length - 1 && !allowDelete && "mr-8"
+                      }`}
                   ></div>
                 </td>
               ))}
@@ -108,9 +108,8 @@ export default function TableTransactions(props: {
           <button
             onClick={() => setCurrentPage(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`${
-              currentPage === 1 ? "text-[#9b9b9b]" : "text-black"
-            } bg-[#D9D9D9] px-4 py-1 rounded-l-full`}
+            className={`${currentPage === 1 ? "text-[#9b9b9b]" : "text-black"
+              } bg-[#D9D9D9] px-4 py-1 rounded-l-full`}
           >
             {"<<"}
           </button>
@@ -118,9 +117,8 @@ export default function TableTransactions(props: {
           <button
             onClick={() => setCurrentPage(currentPage + 1)}
             disabled={currentPage === maxPageData}
-            className={`${
-              currentPage === maxPageData ? "text-[#9b9b9b]" : "text-black"
-            } bg-[#D9D9D9] px-4 py-1 rounded-r-full`}
+            className={`${currentPage === maxPageData ? "text-[#9b9b9b]" : "text-black"
+              } bg-[#D9D9D9] px-4 py-1 rounded-r-full`}
           >
             {">>"}
           </button>

@@ -7,20 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Authentication {
+model User {
   id        Int      @id @default(autoincrement())
-  token     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime
+  nama      String
+  email     String   @unique
+  password  String
+  tipe      UserType
+  keranjang Keranjang?
+  pesanans  Pesanan[]
 }
 
-model User {
-  id       Int      @id @default(autoincrement())
-  nama     String
-  email    String   @unique
-  password String
-  tipe     UserType
+enum StatusItem {
+  Aktif
+  TidakAktif
+}
+
+enum KategoriItem {
+  Pakaian
+  Sepatu
+  Tas
+  PeralatanRumah
 }
 
 model Item {
@@ -28,24 +34,27 @@ model Item {
   nama       String
   harga      Int
   gambar     String
-  kategori   String
+  kategori   KategoriItem
+  status     StatusItem
 }
 
 model Keranjang {
-  idUser       Int  @id
-  totalNominal Int
-  items        Json
+  id_user       Int  @id
+  user          User @relation(fields: [id_user], references: [id])
+  total_nominal Int
+  items         Json
 }
 
 model Pesanan {
-  id               Int              @id @default(autoincrement())
-  idUser           Int
-  waktuPemesanan   DateTime         @default(now())
-  nominalPemesanan Int
-  statusPesanan    StatusPesanan
-  buktiPembayaran  String
-  statusPembayaran StatusPembayaran
-  items            Json
+  id                Int              @id @default(autoincrement())
+  id_user           Int
+  user              User             @relation(fields: [id_user], references: [id])
+  waktu_pemesanan   DateTime         @default(now())
+  total_nominal     Int
+  status_pesanan    StatusPesanan
+  bukti_pembayaran  String
+  status_pembayaran StatusPembayaran
+  items             Json
 }
 
 enum UserType {

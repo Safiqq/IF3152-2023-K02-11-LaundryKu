@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { useWindowSize } from "@/lib/window"
+import { UseWindowSize } from "@/lib/window"
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs))

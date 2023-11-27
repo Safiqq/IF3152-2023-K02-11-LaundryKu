@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export const useWindowSize = () => {
+export const UseWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
     width: 0,
     height: 0,
@@ -21,4 +21,4 @@ export const useWindowSize = () => {
   return windowSize;
 }
 
-export const isWideScreen = () => useWindowSize().width > 1386;
+export const isWideScreen = () => UseWindowSize().width > 1386;

@@ -48,7 +48,7 @@ export default function SignUp() {
             setLoading(true);
             router.push("/katalog/pakaian");
           } else {
-            window.alert(res.error);
+            window.alert(JSON.stringify(res.error));
             setLoading(false);
           }
         });

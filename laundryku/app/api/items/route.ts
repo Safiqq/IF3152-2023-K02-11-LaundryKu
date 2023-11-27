@@ -1,15 +1,16 @@
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from "@/app/api/_base";
 
 export async function GET() {
   try {
-    const data = await prisma.item.findMany();
+    const data = await prisma.item.findMany({
+      orderBy: {
+        id: 'asc'
+      }
+    });
+
     return Response.json({ data });
   } catch (error) {
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -19,6 +20,7 @@ export async function POST(req: Request) {
     await prisma.item.create({data: payload});
     return Response.json({message: "success"})
   } catch (error) {
+    console.log(error)
     return Response.json({error})
   }
 }

@@ -7,102 +7,87 @@ import Table from "@/components/table";
 import { toCurrency } from "@/lib/utils";
 import { CSVLink } from "react-csv";
 import { format } from 'date-fns';
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import Image from "next/image"
 
-interface LaporanTransaksi {
+interface DataPesanan {
+  id: number;
+  id_user: number;
+  waktu_pemesanan: Date;
+  status_pesanan: string;
+  bukti_pembayaran: string;
+  status_pembayaran: string;
+  items: {} | string;
+}
+
+interface DataLaporan {
   id: number;
   nama_barang: string;
   harga: number;
   jumlah: number;
-  harga_total?: number;
+  harga_total: number;
 }
 
-const data: LaporanTransaksi[] = [
-  {
-    id: 1,
-    nama_barang: "Kaos",
-    harga: 10000,
-    jumlah: 1,
-  },
-  {
-    id: 2,
-    nama_barang: "Celana Panjang",
-    harga: 10000,
-    jumlah: 2,
-  },
-  {
-    id: 3,
-    nama_barang: "Kemeja",
-    harga: 10000,
-    jumlah: 1,
-  },
-  {
-    id: 4,
-    nama_barang: "Sprei",
-    harga: 10000,
-    jumlah: 3,
-  },
-  {
-    id: 5,
-    nama_barang: "Selimut",
-    harga: 10000,
-    jumlah: 2,
-  },
-  {
-    id: 6,
-    nama_barang: "Handuk",
-    harga: 10000,
-    jumlah: 1,
-  },
-  {
-    id: 7,
-    nama_barang: "Matras",
-    harga: 10000,
-    jumlah: 1,
-  },
-  {
-    id: 8,
-    nama_barang: "Sarung Bantal",
-    harga: 10000,
-    jumlah: 1,
-  },
-  {
-    id: 9,
-    nama_barang: "Sepatu Tinggi",
-    harga: 10000,
-    jumlah: 3,
-  },
-  {
-    id: 10,
-    nama_barang: "Tas Besar",
-    harga: 10000,
-    jumlah: 1,
-  },
-];
+interface DataProduk {
+  id: number;
+  nama: string;
+  harga: number;
+  gambar: string;
+  kategori: string;
+  status: string;
+}
 
-for (let i = 0; i < data.length; i++) {
-  data[i]["harga_total"] = data[i].harga * data[i].jumlah;
+interface DataPesananItem {
+  [key: string]: number;
 }
 
 export default function Laporan() {
-  const { data: session } = useSession()
-  const router = useRouter();
-  
+  const [dataLaporan, setDataLaporan] = useState<DataLaporan[]>([]);
+  const [dataShown, setDataShown] = useState<DataLaporan[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // if (session?.user?.email) {
-  //   fetch(`/api/user/${session.user.email}`)
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       if (res.data) {
-  //         if (res.data.tipe === "Pelanggan") {
-  //           router.push("/laundry");
-  //         }
-  //       } else {
-  //         router.push("/signin")
-  //       }
-  //     });
-  // }
+  function transformData(data: DataPesanan[], dataProduk: DataProduk[]): DataLaporan[] {
+    return data.map((pesanan) => {
+      const items: DataPesananItem = pesanan.items || {};
+      const laporanItems: DataLaporan[] = Object.keys(items).map((itemId) => {
+        const produk = dataProduk.find((p) => p.id === parseInt(itemId, 10));
+        if (produk) {
+          return {
+            id: produk.id,
+            nama_barang: produk.nama,
+            harga: produk.harga,
+            jumlah: items[itemId],
+            harga_total: produk.harga * items[itemId],
+          };
+        }
+        return null; // Handle case where product is not found
+      });
+  
+      return laporanItems.filter((item) => item !== null) as DataLaporan[];
+    }).flat();
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const resPesanan = await fetch("/api/pesanans");
+        const resProduk = await fetch("/api/items");
+
+        if (resPesanan.ok && resProduk.ok) {
+          const _dataPesanan = (await resPesanan.json()).data;
+          const _dataProduk = (await resProduk.json()).data;
+          setDataLaporan(transformData(_dataPesanan, _dataProduk));
+        } else {
+          window.alert("Failed to fetch data");
+        }
+        setLoading(false)
+      } catch (error) {
+        window.alert("Error fetching data:" + error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const [jenisLaporan, setJenisLaporan] = useState("harian");
   const [value, setValue] = useState({
@@ -114,7 +99,7 @@ export default function Laporan() {
   const generateCSVData = () => {
     return [
       ["ID", "Nama Barang", "Harga", "Jumlah", "Harga Total"],
-      ...data.map((item) => [
+      ...dataLaporan.map((item) => [
         item.id.toString(),
         item.nama_barang,
         item.harga.toString(),
@@ -238,14 +223,24 @@ export default function Laporan() {
       </div>
 
       <Table
-        data={data}
+        data={dataLaporan}
         footer={[
           "Total Pemasukan",
           toCurrency(
-            data.reduce((acc, item) => acc + (item.harga_total || 0), 0)
+            dataLaporan.reduce((acc, item) => acc + (item.harga_total || 0), 0)
           ),
         ]}
       />
+      {loading && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50">
+          <Image
+            src="/spinner-fixgol.gif"
+            alt="spinner"
+            width={700}
+            height={700}
+          />
+        </div>
+      )}
     </div>
   );
 }

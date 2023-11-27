@@ -5,9 +5,8 @@ import { getIndexes, toCurrency } from "@/lib/utils";
 import Image from 'next/image'
 import ModalEditPesanan from "./modal/edit-pesanan";
 import Link from 'next/link'
-import ModalAddItem from "./modal/add-item";
 import ModalDeleteItem from "./modal/delete-item";
-import ModalEditLaundry from "./modal/edit-laundry";
+import ModalEditLaundry from "./modal/edit-item";
 
 interface TableProps {
   data: any[];
@@ -19,39 +18,39 @@ interface TableProps {
 }
 
 export default function Table({ data, allowUpdatePesanan, allowUpdateLaundry, allowDelete, footer, isPagination }: TableProps) {
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isEditModalLaundryOpen, setIsEditModalLaundryOpen] = useState(false);
+  const [isEditPesananModalOpen, setIsEditPesananModalOpen] = useState(false);
+  const [isEditLaundryModalOpen, setIsEditLaundryModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const openAddItemModal = () => {
-    setIsAddModalOpen(true);
-  };
-  const openEditModal = (item: SetStateAction<null>) => {
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const openEditPesananModal = (item: SetStateAction<null>) => {
     setSelectedItem(item);
-    setIsEditModalOpen(true);
+    setIsEditPesananModalOpen(true);
   };
-  const openEditModalLaundry = (item: SetStateAction<null>) => {
+  const openEditLaundryModal = (item: SetStateAction<null>) => {
     setSelectedItem(item);
-    setIsEditModalLaundryOpen(true);
+    setIsEditLaundryModalOpen(true);
   };
   const openDeleteModal = (item: SetStateAction<null>) => {
     setSelectedItem(item);
     setIsDeleteModalOpen(true);
   };
 
-  const closeModals = () => {
+  const handleCloseModals = () => {
     setSelectedItem(null);
-    setIsEditModalOpen(false);
-    setIsAddModalOpen(false);
+    setIsEditPesananModalOpen(false);
+    setIsEditLaundryModalOpen(false);
     setIsDeleteModalOpen(false);
-    setIsEditModalLaundryOpen(false);
+    window.location.reload();
   };
 
-
-  const titles = Object.keys(data[0]);
+  let titles: string[] = [], totalData: number = 0, endIndex: number = 0;
+  if (data && data.length > 0) {
+    titles = Object.keys(data[0]);
+  }
   const indexes = {
     currency: getIndexes(["harga", "nominal"], titles),
-    gambar: getIndexes("gambar", titles),
+    gambar: getIndexes(["gambar", "bukti"], titles),
     status: getIndexes("status", titles),
     bukti: getIndexes("bukti", titles),
   };
@@ -69,30 +68,31 @@ export default function Table({ data, allowUpdatePesanan, allowUpdateLaundry, al
   const padding = "px-4 py-4";
 
   // Pagination
-  const totalData = data.length;
+  if (data && data.length > 0) {
+    totalData = data.length;
+  }
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, totalData);
+  if (data && data.length > 0) {
+    endIndex = Math.min(startIndex + itemsPerPage, totalData);
+  }
 
   if (isPagination) {
     data = data.slice(startIndex, endIndex);
   }
   const maxPageData = Math.ceil(totalData / itemsPerPage);
 
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const allowUD = allowUpdatePesanan || allowUpdateLaundry ||  allowDelete;
+  const allowUD = allowUpdatePesanan || allowUpdateLaundry || allowDelete;
 
   return (
     <div>
-      <ModalEditPesanan isOpen={isEditModalOpen} item={selectedItem} onClose={closeModals} />
-      <ModalAddItem isOpen={isAddModalOpen} onClose={closeModals} />
-      <ModalEditLaundry isOpen={isEditModalLaundryOpen} onClose={closeModals} />
-      <ModalDeleteItem isOpen={isDeleteModalOpen} item={selectedItem} onClose={closeModals} />
-      {(isAddModalOpen || isEditModalOpen || isDeleteModalOpen  || isEditModalLaundryOpen ) && <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50"> </div>}
+      {selectedItem && <ModalEditPesanan isOpen={isEditPesananModalOpen} item={selectedItem} onClose={handleCloseModals} />}
+      {selectedItem && <ModalEditLaundry isOpen={isEditLaundryModalOpen} item={selectedItem} onClose={handleCloseModals} />}
+      {selectedItem && <ModalDeleteItem isOpen={isDeleteModalOpen} item={selectedItem} onClose={handleCloseModals} />}
+      {(isEditPesananModalOpen || isEditLaundryModalOpen || isDeleteModalOpen) && <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50"> </div>}
       <table className="w-full text-center my-4 bg-white border-collapse">
         <thead className="text-lg uppercase bg-[#7689E7]">
           <tr>
@@ -130,17 +130,17 @@ export default function Table({ data, allowUpdatePesanan, allowUpdateLaundry, al
                       width={20}
                       height={20}
                       alt="Update"
-                      onClick={() => openEditModal(item)}
+                      onClick={() => openEditPesananModal(item)}
                     />
                   )}
-                   {allowUpdateLaundry && (
+                  {allowUpdateLaundry && (
                     <Image
                       className="cursor-pointer"
                       src="logo-black/pencil.svg"
                       width={20}
                       height={20}
                       alt="Update"
-                      onClick={() => openEditModalLaundry(item)}
+                      onClick={() => openEditLaundryModal(item)}
                     />
                   )}
                   {allowDelete && (

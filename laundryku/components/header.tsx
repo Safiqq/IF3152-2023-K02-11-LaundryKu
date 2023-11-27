@@ -33,7 +33,7 @@ export function Header() {
         >
           <Image
             className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70]"
-            src="/search.svg"
+            src="/logo-black/search.svg"
             alt="LaundryKu Logo"
             width={16}
             height={16}
@@ -102,7 +102,7 @@ export function Header() {
             }`}
           >
             <Image
-              src="/keranjang.svg"
+              src="/logo-white/keranjang.svg"
               alt="Keranjang Icon"
               width={70}
               height={70}
@@ -119,7 +119,7 @@ export function Header() {
             }`}
           >
             <Image
-              src="/transaksi.svg"
+              src="/logo-white/transaksi.svg"
               alt="Transaksi Icon"
               width={70}
               height={70}

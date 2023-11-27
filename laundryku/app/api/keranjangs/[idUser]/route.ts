@@ -1,36 +1,33 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from "@/app/api/_base";
 
-const prisma = new PrismaClient()
-
-export async function GET(req: Request, { params }: { params: { idUser: number } }) {
+export async function GET(req: Request, { params }: { params: { idUser: string } }) {
   try {
     const { idUser } = params
+    console.log(idUser)
     const data = await prisma.keranjang.findFirst({
       where:
-        { idUser }
+        { id_user: parseInt(idUser) }
     });
     return Response.json({ data });
   } catch (error) {
     console.log(error)
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
-export async function UPDATE(req: Request, { params }: { params: { idUser: number } }) {
+export async function PUT(req: Request, { params }: { params: { idUser: string } }) {
   try {
     const { idUser } = params
-    const payload = await req.json();
+    let payload = await req.json();
     const data = await prisma.keranjang.update({
       where:
-        { idUser },
+        { id_user: parseInt(idUser) },
       data: payload,
     });
+    console.log('datadiapi', data)
     return Response.json({ data });
   } catch (error) {
+    console.log("error", error)
     return Response.json({ error });
-  } finally {
-    await prisma.$disconnect();
   }
 }

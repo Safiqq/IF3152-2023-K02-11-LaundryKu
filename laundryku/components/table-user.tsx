@@ -1,10 +1,8 @@
 "use client";
 
-import Button from "@/components/button";
 import { useEffect, useState } from "react";
 import { X } from "react-bootstrap-icons";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function TableUser(props: {
   data: any[];
@@ -12,12 +10,14 @@ export default function TableUser(props: {
   footer?: string[];
 }) {
   const { data: InitialData, allowDelete, footer } = props;
-  const titles = Object.keys(InitialData[0]);
-  const currencyIndexes = titles
+  let titles, currencyIndexes: any;
+  if (InitialData && InitialData.length > 0) {
+    titles = Object.keys(InitialData[0]);
+    currencyIndexes = titles
     .map((title, index) => (title.includes("total") ? index : undefined))
     .filter((index) => index !== undefined);
+  }
 
-  const dataAwal = InitialData;
   const padding = "px-2 py-4";
   const totalData = InitialData.length;
   const itemsPerPage = 5;
@@ -80,7 +80,7 @@ export default function TableUser(props: {
       <table className="min-w-full text-center mt-4 bg-white text-black ">
         <thead className="text-xl capitalize bg-white border-b-2 border-[#6C6C6C]">
           <tr>
-            {titles.map((item, idx) => (
+            {titles?.map((item, idx) => (
               <th
                 key={idx}
                 className={`px-4 py-2 text-[#8C8F96] font-semibold ${
@@ -170,7 +170,7 @@ export default function TableUser(props: {
           ))}
           {footer && (
             <tr>
-              {titles.map((_, idx) => (
+              {titles?.map((_, idx) => (
                 <td key={idx}>
                   <div
                     className={`h-1.5 bg-[#7689E7] ${idx === 0 && "ml-8"} ${

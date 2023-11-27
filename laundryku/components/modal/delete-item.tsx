@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Dropdown } from "../dropdown";
+import React from "react";
 
 interface ModalDeleteItemProps {
     isOpen: boolean;
@@ -14,24 +13,24 @@ const ModalDeleteItem = ({ isOpen, item, onClose }: ModalDeleteItemProps) => {
 
     const handleDelete = async () => {
         try {
-          const response = await fetch(`/api/items/${item.id}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-    
-          if (response.ok) {
-            window.alert("Item deleted successfully");
-          } else {
-            window.alert("Failed to delete item");
-          }
+            const response = await fetch(`/api/items/${item.id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            if (data.error) {
+                window.alert("Failed to delete item");
+            } else {
+                window.alert("Item deleted successfully");
+            }
         } catch (error) {
-          window.alert("An error occurred while deleting the item", error);
+            window.alert("An error occurred while deleting the item" + error);
         } finally {
-          onClose();
+            onClose();
         }
-      };
+    };
 
     return (
         <div className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto" >
