@@ -100,6 +100,15 @@ export default function Keranjang() {
                 <p className="font-semibold text-base mt-2">.PDF .JPG .PNG .DOC</p>
                 <p className="font-semibold text-base">Drag and Drop your files here</p>
               </label>
+              <div className="flex flex-row justify-between w-10/12 mt-6">
+                <div className="text-[#706464] py-2 px-16 text-lg font-bold border-2 border-[#706464] rounded-full cursor-pointer hover:bg-[#dedcdc]">
+                  Cancel
+                </div>
+                <div className="text-white py-2 px-16 bg-[#7689E7] hover:bg-[#5365c1] text-lg font-bold rounded-full cursor-pointer">
+                  Submit
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

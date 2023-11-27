@@ -8,11 +8,10 @@ import Link from "next/link";
 
 export default function TableUser(props: {
   data: any[];
-  allowUpdate?: boolean;
   allowDelete?: boolean;
   footer?: string[];
 }) {
-  const { data: InitialData, allowUpdate, allowDelete, footer } = props;
+  const { data: InitialData, allowDelete, footer } = props;
   const titles = Object.keys(InitialData[0]);
   const currencyIndexes = titles
     .map((title, index) => (title.includes("total") ? index : undefined))
@@ -33,8 +32,6 @@ export default function TableUser(props: {
 
   const [data, setData] = useState<any[]>();
   const [originalPrices, setOriginalPrices] = useState<number[]>();
-
-  const allowUD = allowUpdate || allowDelete;
 
   useEffect(() => {
     const prices = InitialData.map((item) => item.total_price / item.quantity);
@@ -81,7 +78,7 @@ export default function TableUser(props: {
                 {idx === 0 ? "product" : item.replaceAll("_", " ")}
               </th>
             ))}
-            {allowUD && <th className={padding}></th>}
+            {allowDelete && <th className={padding}></th>}
           </tr>
         </thead>
         <tbody>
@@ -149,7 +146,7 @@ export default function TableUser(props: {
                   )}
                 </td>
               ))}
-              {allowUD && (
+              {allowDelete && (
                 <td className={``}>
                   {allowDelete && (
                     <div className="flex flex-col justify-center items-center">
@@ -171,12 +168,12 @@ export default function TableUser(props: {
                 <td key={idx}>
                   <div
                     className={`h-1.5 bg-[#7689E7] ${idx === 0 && "ml-8"} ${
-                      idx == titles.length - 1 && !allowUD && "mr-8"
+                      idx == titles.length - 1 && !allowDelete && "mr-8"
                     }`}
                   ></div>
                 </td>
               ))}
-              {allowUD && (
+              {allowDelete && (
                 <td>
                   <div className="h-1.5 bg-[#7689E7] mr-8"></div>
                 </td>
