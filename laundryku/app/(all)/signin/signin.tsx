@@ -69,8 +69,8 @@ export default function SignIn() {
         </div>
         <div className='ml-28 mt-32'>
           <div>
-            <p className='text-[48px] font-bold'>Welcome Back!</p>
-            <p className='text-[28px] font-semibold text-[#928B8B]'>Sign in to your account</p>
+            <p className='text-[44px] font-bold'>Welcome Back!</p>
+            <p className='text-[24px] font-semibold text-[#928B8B]'>Sign in to your account</p>
           </div>
           <div className=" flex flex-col gap-4 mt-6 mb-10">
             <div>
