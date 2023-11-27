@@ -4,18 +4,18 @@ import { CardProduct } from "@/components/card-product";
 
 const dataProduk = [
     {
-        img: "/product/image1.png",
-        nama: "Kaos",
+        img: "/product/sepatu-tinggi.png",
+        nama: "Sepatu Tinggi",
         harga: 5000,
     },
     {
-        img: "/product/image2.png",
-        nama: "Kemeja",
+        img: "/product/sepatu-rendah.png",
+        nama: "Sepatu Rendah",
         harga: 5000,
     },
     {
-        img: "/product/image2.png",
-        nama: "Kemeja",
+        img: "/product/sepatu-kulit.png",
+        nama: "Sepatu Kulit",
         harga: 5000,
     },
 ];
