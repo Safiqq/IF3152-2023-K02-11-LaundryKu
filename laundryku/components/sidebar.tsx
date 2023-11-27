@@ -11,7 +11,7 @@ export default function Sidebar() {
   const isWideScreen = true;
 
   return (
-    <div className={`${isWideScreen ? "h-full w-1/5 bg-white rounded-r-3xl" : (!isMinimize ? "z-10 h-full w-screen bg-white" : "w-24 h-12 top-8 bg-[#7689E7] rounded-r-3xl")}`}>
+    <div className={`${isWideScreen ? "w-1/5 bg-white rounded-r-3xl" : (!isMinimize ? "z-10 w-screen bg-white" : "w-24 h-12 top-8 bg-[#7689E7] rounded-r-3xl")}`}>
       {!isWideScreen && isMinimize &&
         <div className='flex justify-end mx-4 items-center h-full cursor-pointer' onClick={() => setIsMinimize(!isMinimize)}>
           <Image

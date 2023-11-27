@@ -1,17 +1,28 @@
 "use client"
-import React from 'react';
+import React, {useState} from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'
 
 export default function SignUp() {
   const router = useRouter();
-  const [payload, setPay]
+  const [payload, setPayload] = useState({
+    nama: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const handleSignIn = () => {
-    if (payload.email === "" && payload.password === "") {
+  const handleSignUp = () => {
+    if (payload.nama === "" || payload.email === "" || payload.password === "" || payload.confirmPassword === "") {
       window.alert("Form tidak boleh kosong");
     } else {
-      fetch(`/api/users/${payload.email}`)
+      fetch(`/api/users/${payload.email}`,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
       .then((res) => res.json())
       .then(res => {
         if (payload.password === res.data.password) {
@@ -20,8 +31,6 @@ export default function SignUp() {
           } else if (res.data.tipe === "pelanggan") {
             router.push("/katalog/pakaian");
           }
-        } else {
-          window.alert("Email atau password salah");
         }
       })
     }
@@ -61,13 +70,15 @@ export default function SignUp() {
           <div className="text-black flex flex-col gap-4 mt-6 mb-10">
             <div>
               <span className="my-1 after:content-['*'] after:ml-0.5 after:text-red-500 block text-xl font-bold text-slate-800">
-                Username
+                Nama
               </span>
               <input
-                type="username"
-                name="username"
+                type="nama"
+                name="nama"
                 className="w-3/5 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
-                placeholder="Username" />
+                placeholder="Nama" 
+                onChange={(e) => setPayload({...payload, nama: e.target.value})}
+                />
             </div>
 
             <div>
@@ -78,7 +89,9 @@ export default function SignUp() {
                 type="email"
                 name="email"
                 className="w-3/5 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
-                placeholder="you@example.com" />
+                placeholder="you@example.com"
+                onChange={(e) => setPayload({...payload, email: e.target.value})}
+                 />
             </div>
 
             <div>
@@ -89,7 +102,9 @@ export default function SignUp() {
                 type="password"
                 name="password"
                 className="w-3/5 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
-                placeholder="•••••••••" />
+                placeholder="•••••••••" 
+                onChange={(e) => setPayload({...payload, password: e.target.value})}
+                />
             </div>
 
             <div>
@@ -100,12 +115,15 @@ export default function SignUp() {
                 type="confirm-password"
                 name="confirm-password"
                 className="w-3/5 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
-                placeholder="•••••••••" />
+                placeholder="•••••••••" 
+                onChange={(e) => setPayload({...payload, confirmPassword: e.target.value})}
+                />
             </div>
           </div>
           <button
             type="button"
             className="w-3/5 text-white bg-[#7689E7] hover:bg-[#6272C1] focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-md px-5 py-3 text-center dark:bg-[#7689E7] dark:hover:bg-[#6272C1] dark:focus:ring-white"
+            onClick={handleSignUp}
           >
             Sign Up
           </button>

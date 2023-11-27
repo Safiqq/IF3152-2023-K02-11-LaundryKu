@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex min-w-screen min-h-screen bg-[#F5F7FF]">
+        <main className="flex min-w-screen min-h-screen bg-[#F5F7FF] text-black">
           <Sidebar />
           <div>
             <Header />

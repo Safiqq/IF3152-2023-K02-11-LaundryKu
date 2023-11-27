@@ -9,8 +9,7 @@ export function SignIn({
     <form
       action={async () => {
         "use server"
-        const url = await signIn(provider, { redirect: false })
-        redirect(url.replace("signin", "api/auth/signin"))
+        const url = await signIn(provider, { redirect: true, redirectTo: "api/auth/signin" })
       }}
     >
       <button>
@@ -25,7 +24,7 @@ export function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
     <form
       action={async () => {
         "use server"
-        await signOut()
+        await signOut({redirect: true, redirectTo: "signin"})
       }}
       className="w-full"
     >
