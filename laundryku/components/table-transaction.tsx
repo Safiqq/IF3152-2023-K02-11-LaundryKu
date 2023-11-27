@@ -30,51 +30,6 @@ export default function TableTransactions(props: {
   const currentPageData = InitialData.slice(startIndex, endIndex);
   const maxPageData = Math.ceil(totalData / itemsPerPage);
 
-  const [data, setData] = useState<any[]>();
-  const [originalPrices, setOriginalPrices] = useState<number[]>();
-
-  useEffect(() => {
-    const prices = InitialData.map((item) => item.total_price / item.quantity);
-    setOriginalPrices(prices);
-  }, [InitialData]);
-
-  const handleQuantityChange = (index: number, newQuantity: number) => {
-    if (!originalPrices) return;
-  
-    const originalPrice = originalPrices[index];
-    const newData = [...InitialData];
-  
-    if (newQuantity === 0) {
-      // Remove the item from the data array
-      newData.splice(index, 1);
-    } else {
-      // Update quantity and total price
-      newData[index].quantity = newQuantity;
-      newData[index].total_price = newQuantity * originalPrice;
-    }
-  
-    setTotalPrice(
-      newData.reduce(
-        (accumulator, currentItem) => accumulator + currentItem.total_price,
-        0
-      )
-    );
-  
-    setData(newData);
-  };
-
-  const [totalPrice, setTotalPrice] = useState<number>(0);
-
-  useEffect(() => {
-    if (!originalPrices) return;
-    const newTotalPrice = InitialData.reduce(
-      (accumulator, currentItem) => accumulator + currentItem.total_price,
-      0
-    );
-
-    setTotalPrice(newTotalPrice);
-  }, [data, originalPrices]);
-
   return (
     <div>
       <table className="min-w-full text-center mt-4 bg-white text-black ">
@@ -83,95 +38,49 @@ export default function TableTransactions(props: {
             {titles.map((item, idx) => (
               <th
                 key={idx}
-                className={`px-4 py-2 text-[#8C8F96] font-semibold ${
-                  idx === 0 ? "text-left " : item === "product" ? "invisible" : ""
-                }`}
+                className={`px-4 py-2 text-[#8C8F96] font-semibold`}
               >
-                {idx === 0 ? "product" : item.replaceAll("_", " ")}
+                {item.replaceAll("_", " ")}
               </th>
             ))}
-            {allowDelete && <th className={padding}></th>}
           </tr>
         </thead>
         <tbody>
           {currentPageData.map((item, index) => (
             <tr
               key={index + (currentPage - 1) * 5}
-              className="bg-white border-b-2 border-[#6C6C6C] text-xl"
+              className="bg-white border-b-2 border-[#6C6C6C] text-xl capitalize"
             >
               {Object.values(item).map((val, idx) => (
                 <td
                   key={idx}
-                  className={`${padding} ${idx === 1 ? "text-left" : ""}`}
+                  className={`${padding}`}
                 >
-                  {idx === 2 ? (
-                    <div className="flex items-center justify-center">
-                      <button
-                        onClick={() =>
-                          handleQuantityChange(
-                            index + (currentPage - 1) * 5,
-                            Math.max(0, (val as number) - 1) 
-                          )
-                        }
-                        className="px-2 text-2xl"
-                      >
-                        -
-                      </button>
-                      <span
-                        className="mx-2 rounded-xl bg-[#7689E7] px-4 text-white"
-                        onClick={() =>
-                          console.log(index + (currentPage - 1) * 5)
-                        }
-                      >
-                        {val as number}
-                      </span>
-                      <button
-                        onClick={() =>
-                          handleQuantityChange(
-                            index + (currentPage - 1) * 5,
-                            (val as number) + 1
-                          )
-                        }
-                        className="px-2 text-2xl"
-                      >
-                        +
-                      </button>
-                    </div>
-                  ) : currencyIndexes.includes(idx) ? (
-                    toCurrency(val as number)
-                  ) : idx === 0 ? (
-                    <div className="flex flex-col items-start">
-                      <Image
-                        src={`${val as string}`}
-                        alt="LaundryKu Logo"
-                        width={125}
-                        height={125}
-                        
-                        className="rounded-xl"
-                      />
-                    </div>
+                  {idx === titles.length - 1 || idx === titles.length -2 ? ( // Assuming status is the last column
+                    <button
+                      className={`px-6 py-3 rounded capitalize ${
+                        val === 'berhasil' ? 'bg-[#F9BA42] rounded-full font-semibold' :
+                        val === 'diambil' ? 'bg-[#227B3D] rounded-full font-semibold text-white' :
+                        val === 'diproses' ? 'bg-[#D9D9D9] rounded-full font-semibold' :
+                        'bg-gray-500'
+                      }`}
+                    >
+                      {val as string}
+                    </button>
                   ) : (
-                    <p className="font-semibold">
-                        {val as string}
-                    </p>
-                    
+                    idx === 2 ? (
+                      <div className="flex items-center justify-center font-semibold">
+                        {toCurrency(item.total_nominal)}
+                      </div>
+                    ) : currencyIndexes.includes(idx) ? (
+                      toCurrency(val as number)
+                    ) : (
+                      <p className="font-semibold">{val as string}</p>
+                    )
                   )}
                 </td>
               ))}
-              {allowDelete && (
-                <td className={``}>
-                  {allowDelete && (
-                    <div className="flex flex-col justify-center items-center">
-                      <X
-                        className="cursor-pointer "
-                        onClick={() =>
-                          console.log(index + (currentPage - 1) * 5)
-                        }
-                      />
-                    </div>
-                  )}
-                </td>
-              )}
+              
             </tr>
           ))}
           {footer && (
@@ -194,7 +103,7 @@ export default function TableTransactions(props: {
           )}
         </tbody>
       </table>
-      <div className="flex justify-center gap-4 items-center bg-white py-4">
+      <div className="flex justify-center gap-4 items-center bg-white py-8">
         <div className="flex justify-center">
           <button
             onClick={() => setCurrentPage(currentPage - 1)}
@@ -219,23 +128,6 @@ export default function TableTransactions(props: {
         <p className="text-xl">
           Showing {currentPage} to {maxPageData} of {totalData} entries
         </p>
-      </div>
-      <div className="flex flex-col justify-end items-end text-xl text-[#6C6C6C] font-semibold">
-        <div className="w-1/4">
-          <div className="flex flex-row gap-3 mb-2">
-            <p>Subtotal:</p>
-            <p className="text-black">{toCurrency(totalPrice)}</p>
-          </div>
-          <div className="flex flex-row gap-2 mb-2">
-            <p>Shipping:</p>
-            <p className="text-black">Free</p>
-          </div>
-          <div className="bg-[#6C6C6C] w-full h-1"></div>
-          <div className="flex flex-row gap-3 my-2 justify-center">
-            <p className="text-black">Total:</p>
-            <p className="text-black">{toCurrency(totalPrice)}</p>
-          </div>
-        </div>
       </div>
     </div>
   );
