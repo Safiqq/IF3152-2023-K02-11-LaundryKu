@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 import Laundry from "./laundry"
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Sign Up',
@@ -9,5 +11,10 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return (<Laundry />)
+  const cookieStore = cookies()
+  if (cookieStore.get("next-auth.session-token")) {
+    return (<Laundry />)
+  } else {
+    return redirect('/signin')
+  }
 }

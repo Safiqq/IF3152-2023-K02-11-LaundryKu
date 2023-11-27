@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 import Pesanan from "./pesanan"
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Sign Up',
@@ -9,5 +11,10 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return (<Pesanan />)
+  const cookieStore = cookies()
+  if (cookieStore.get("next-auth.session-token")) {
+    return (<Pesanan />)
+  } else {
+    return redirect('/signin')
+  }
 }
