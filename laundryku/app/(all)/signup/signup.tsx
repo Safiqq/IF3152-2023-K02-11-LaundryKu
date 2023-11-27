@@ -5,6 +5,27 @@ import { useRouter } from 'next/navigation'
 
 export default function SignUp() {
   const router = useRouter();
+  const [payload, setPay]
+
+  const handleSignIn = () => {
+    if (payload.email === "" && payload.password === "") {
+      window.alert("Form tidak boleh kosong");
+    } else {
+      fetch(`/api/users/${payload.email}`)
+      .then((res) => res.json())
+      .then(res => {
+        if (payload.password === res.data.password) {
+          if (res.data.tipe === "pegawai") {
+            router.push("/laundry");
+          } else if (res.data.tipe === "pelanggan") {
+            router.push("/katalog/pakaian");
+          }
+        } else {
+          window.alert("Email atau password salah");
+        }
+      })
+    }
+  }
   return (
     <>
       <div className="mr-5 flex-grow flex justify-end">

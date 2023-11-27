@@ -1,11 +1,45 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
+interface User {
+  id: number;
+  username: string;
+  nama: string;
+  email: string;
+  password: StaticRange;
+  tipe: string;
+};
+
 export default function SignIn() {
-  const router= useRouter();
+  const router = useRouter();
+  const [payload, setPayload] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSignIn = () => {
+    if (payload.email === "" && payload.password === "") {
+      window.alert("Form tidak boleh kosong");
+    } else {
+      fetch(`/api/users/${payload.email}`)
+      .then((res) => res.json())
+      .then(res => {
+        if (payload.password === res.data.password) {
+          if (res.data.tipe === "pegawai") {
+            router.push("/laundry");
+          } else if (res.data.tipe === "pelanggan") {
+            router.push("/katalog/pakaian");
+          }
+        } else {
+          window.alert("Email atau password salah");
+        }
+      })
+    }
+  }
+
   return (
     <>
       <div className="mr-5 flex-grow flex justify-end">
@@ -47,7 +81,9 @@ export default function SignIn() {
                 type="email"
                 name="email"
                 className="w-3/5 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
-                placeholder="you@example.com" />
+                placeholder="you@example.com"
+                onChange={(e) => setPayload({ ...payload, email: e.target.value })}
+              />
             </div>
 
             <div>
@@ -58,12 +94,15 @@ export default function SignIn() {
                 type="password"
                 name="password"
                 className="w-3/5 px-4 py-3 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-lg text-md sm:text-md focus:ring-1"
-                placeholder="•••••••••" />
+                placeholder="•••••••••"
+                onChange={(e) => setPayload({ ...payload, password: e.target.value })}
+              />
             </div>
           </div>
           <button
             type="button"
             className="w-3/5 text-white bg-[#7689E7] hover:bg-[#6272C1] focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-md px-5 py-3 text-center dark:bg-[#7689E7] dark:hover:bg-[#6272C1] dark:focus:ring-white"
+            onClick={handleSignIn}
           >
             Sign In
           </button>
@@ -72,7 +111,7 @@ export default function SignIn() {
             <p>or</p>
             <div className='w-1/2 h-[1px] bg-[#595959]'></div>
           </div>
-          <button className='w-3/5 flex gap-2 items-center justify-center px-5 py-2 rounded-full border border-[#8C8585]'>
+          <button className='w-3/5 flex gap-2 items-center justify-center px-5 py-2 rounded-full border border-[#8C8585]' onClick={() => router.push('api/auth/signin')}>
             <Image src="/logo-black/github.svg" width={36} height={36} alt="Github"></Image>
             <p className='font-bold'>Continue with Github</p>
           </button>

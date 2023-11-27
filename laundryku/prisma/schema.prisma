@@ -18,8 +18,8 @@ model Authentication {
 }
 
 enum UserType {
-  pegawai
-  pelanggan
+  Pegawai
+  Pelanggan
 }
 
 model User {
