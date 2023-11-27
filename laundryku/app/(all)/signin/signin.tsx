@@ -1,10 +1,13 @@
 "use client";
 
+import { useSession } from "next-auth/react"
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+  const a = useSession()
+  console.log('a', a)
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [payload, setPayload] = useState({
